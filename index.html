@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Study Partner — Complete Quiz System</title>
+<title>Study Partner — Improved Quiz System</title>
 <style>
 :root{--bg:#f4f7fb;--card:#fff;--text:#172033;--muted:#64748b;--primary:#315efb;--line:#e2e8f0;--good:#15803d;--bad:#b91c1c}
 body.dark{--bg:#101827;--card:#1b2638;--text:#edf2ff;--muted:#a8b4c7;--line:#334155;--primary:#7894ff}
@@ -50,8 +50,8 @@ footer{text-align:center;padding:25px;color:var(--muted)}a{color:var(--primary)}
 <div><label id="subjectLabel">পরীক্ষাভিত্তিক বিষয়</label><select id="subject"><option value="all">সকল বিষয়</option><option value="bangla">বাংলা</option><option value="english">English</option><option value="math">গণিত</option><option value="gk">সাধারণ জ্ঞান</option><option value="science">সাধারণ বিজ্ঞান</option><option value="ict">ICT / কম্পিউটার</option></select></div>
 <div><label>প্রশ্নসংখ্যা</label><select id="questionCount"><option>20</option><option>25</option><option>30</option><option>50</option><option>60</option><option selected>100</option></select></div>
 </div>
-<p class="small">স্কুল/কলেজে শ্রেণি ও বিষয় বেছে নাও; চাকরির পরীক্ষায় পরীক্ষার ধরন ও বিষয় বেছে নাও। প্রতিটি টেস্টে নির্বাচিত সংখ্যক প্রশ্ন থাকবে। কোনো ফিল্টারে প্রশ্ন ১০০টির কম হলে প্রশ্নব্যাংক থেকে পুনরাবৃত্তি হতে পারে—নতুন প্রশ্ন যোগ করলে বৈচিত্র্য বাড়বে।</p>
-<button onclick="startQuiz()">মডেল টেস্ট শুরু</button><p class="small">প্রশ্নব্যাংক বাড়াতে HTML-এর JavaScript অংশে <code>extras</code> তালিকার মতো নতুন প্রশ্ন যোগ করো। প্রতিটি প্রশ্নে বিষয়, অপশন, সঠিক উত্তর এবং ব্যাখ্যা থাকবে।</p>
+<p class="small">স্কুল/কলেজে শ্রেণি ও বিষয় বেছে নাও; চাকরির পরীক্ষায় ধরন ও বিষয় বেছে নাও। এটি সাধারণ অনুশীলন প্রশ্নব্যাংক—সব প্রশ্ন কোনো নির্দিষ্ট নিয়োগ পরীক্ষার অফিসিয়াল প্রশ্ন নয়।</p><div class="feedback" id="bankInfo" aria-live="polite">প্রশ্নব্যাংক হিসাব করা হচ্ছে…</div>
+<button onclick="startQuiz()">মডেল টেস্ট শুরু</button><p class="small">প্রতিটি প্রশ্নের অপশন এলোমেলোভাবে সাজানো হয়। প্রশ্নব্যাংক বাড়াতে JavaScript-এর <code>extras</code> তালিকায় বিষয়, প্রশ্ন, চারটি অপশন, সঠিক অপশনের সূচক এবং ব্যাখ্যা যোগ করো।</p>
 </div>
 <div class="card hidden" id="quizBox"><div class="row"><div><b id="progress">প্রশ্ন 1</b></div><div style="text-align:right" id="quizScore">স্কোর: 0</div></div><div id="questionArea"></div><div id="questionNav" class="row" style="gap:5px;flex-wrap:wrap;margin:12px 0"></div><div class="row"><button id="prevBtn" onclick="prevQuestion()">আগের প্রশ্ন</button><button id="nextBtn" onclick="nextQuestion()">পরের প্রশ্ন</button><button class="hidden" id="finishBtn" onclick="finishQuiz()">ফলাফল দেখো</button></div></div>
 <div class="card hidden" id="resultBox"></div>
@@ -74,7 +74,6 @@ function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;',
 let remaining=1500,timer=null,timerMode=25;function setTimerMode(m){pauseTimer();timerMode=m;remaining=m*60;drawClock();$('timerMsg').textContent=m===5?'বিরতির সময় সেট করা হয়েছে।':'পড়ার সময় সেট করা হয়েছে।'}function drawClock(){$('clock').textContent=String(Math.floor(remaining/60)).padStart(2,'0')+':'+String(remaining%60).padStart(2,'0')}
 function startTimer(){if(timer)return;timer=setInterval(()=>{remaining--;drawClock();if(remaining<=0){pauseTimer();$('timerMsg').textContent=timerMode===25?'পড়ার সময় শেষ! এবার ৫ মিনিট বিরতি নাও 🎉':'বিরতি শেষ! এবার পড়া শুরু করো 💪';}},1000)}function pauseTimer(){clearInterval(timer);timer=null}function resetTimer(){pauseTimer();remaining=timerMode*60;drawClock();$('timerMsg').textContent=''}
 function saveJobNote(){$('jobSaved').textContent='নোট সেভ হয়েছে।';localStorage.setItem('spJobNote',$('jobNote').value)}$('jobNote').value=localStorage.getItem('spJobNote')||'';
-function askDemo(){let q=$('aiQuestion').value.trim();if(!q)return;$('aiAnswer').classList.remove('hidden');$('aiAnswer').textContent='পরামর্শ: প্রশ্নটিকে ছোট ছোট অংশে ভাগ করো, ২৫ মিনিট মনোযোগ দিয়ে পড়ো, তারপর বই বন্ধ করে নিজেকে পরীক্ষা করো। নির্দিষ্ট বিষয়ে উত্তর পেতে বাস্তব AI API সংযোগ প্রয়োজন।'}
 /* প্রশ্নব্যাংক সম্প্রসারণ: নিচের কাঠামো অনুসরণ করে নতুন প্রশ্ন যোগ করা যাবে।
  {exam:['all','bcs'], subject:'math', q:'প্রশ্ন', options:['ক','খ','গ','ঘ'], answer:0, explanation:'ব্যাখ্যা'}
 */
@@ -176,6 +175,30 @@ const extras=[
 ['ict','নিচের কোনটি সার্চ ইঞ্জিন?',['Google','PowerPoint','Windows','Bluetooth'],0,'Google একটি সার্চ ইঞ্জিন।']
 ];
 extras.forEach(x=>add(x[0],x[1],x[2],x[3],x[4]));
+/* চাকরিভিত্তিক অতিরিক্ত অনুশীলন প্রশ্ন: এগুলো অফিসিয়াল প্রশ্নপত্র নয়। */
+const examExtras=[
+ ['math','একটি পণ্যের দাম ৮০০ টাকা। ১৫% ছাড়ের পর দাম কত?',['৬২০ টাকা','৬৮০ টাকা','৭০০ টাকা','৭২০ টাকা'],1,'ছাড় = ৮০০×১৫% = ১২০ টাকা; বিক্রয়মূল্য = ৮০০−১২০ = ৬৮০ টাকা।',['bcs','bank','job']],
+ ['math','৫টি কলমের দাম ৬০ টাকা হলে ৮টি কলমের দাম কত?',['৮৪ টাকা','৯০ টাকা','৯৬ টাকা','১০০ টাকা'],2,'একটি কলমের দাম ৬০÷৫ = ১২ টাকা; ৮টির দাম ৯৬ টাকা।',['bcs','bank','job']],
+ ['math','একটি সংখ্যা ২০% বৃদ্ধি পেয়ে ১২০ হলে মূল সংখ্যাটি কত?',['৯০','৯৬','১০০','১১০'],2,'মূল সংখ্যা × ১.২০ = ১২০; মূল সংখ্যা = ১০০।',['bcs','bank','job']],
+ ['math','A একটি কাজ ৬ দিনে এবং B ৩ দিনে করতে পারে। একসঙ্গে করলে কত দিনে হবে?',['১ দিন','২ দিন','৩ দিন','৪ দিন'],1,'এক দিনে কাজের হার ১/৬+১/৩ = ১/২; পুরো কাজ ২ দিনে হবে।',['bcs','bank','job']],
+ ['math','ধারাটি সম্পূর্ণ করো: ২, ৬, ১৮, ৫৪, __',['১০৮','১৪৪','১৬২','২১৬'],2,'প্রতিটি পদকে ৩ দিয়ে গুণ করা হয়েছে; ৫৪×৩ = ১৬২।',['bcs','bank','job']],
+ ['english','Choose the correct sentence.',['He do his work.','He does his work.','He doing his work.','He done his work.'],1,'Simple present tense-এ he/she/it-এর সঙ্গে does ব্যবহৃত হয়।',['bcs','bank','teacher','job']],
+ ['english','Synonym of “Abundant” is ___.',['Scarce','Plentiful','Empty','Tiny'],1,'Abundant means plentiful or available in large quantities.',['bcs','bank','job']],
+ ['english','Choose the correct preposition: She is interested ___ music.',['on','at','in','for'],2,'The correct expression is “interested in”.',['bcs','bank','teacher','job']],
+ ['bangla','“যে উপকারীর উপকার স্বীকার করে” — এক কথায় কী?',['কৃতঘ্ন','কৃতজ্ঞ','পরোপকারী','উদার'],1,'উপকারীর উপকার স্বীকার করে যে, সে কৃতজ্ঞ।',['bcs','teacher','job']],
+ ['bangla','“অরণ্যে রোদন” বাগধারাটির অর্থ কী?',['আনন্দ প্রকাশ','নিষ্ফল আবেদন','বিপদে পড়া','গোপন কথা'],1,'অরণ্যে রোদন অর্থ এমন আবেদন যা কেউ শোনে না; নিষ্ফল আবেদন।',['bcs','teacher','job']],
+ ['gk','বাংলাদেশের সংবিধান কার্যকর হয় কবে?',['২৬ মার্চ ১৯৭১','১৬ ডিসেম্বর ১৯৭১','৪ নভেম্বর ১৯৭২','১৬ ডিসেম্বর ১৯৭২'],3,'বাংলাদেশের সংবিধান ১৬ ডিসেম্বর ১৯৭২ থেকে কার্যকর হয়।',['bcs','teacher','job']],
+ ['gk','জাতিসংঘের সদর দপ্তর কোথায়?',['জেনেভা','নিউইয়র্ক','প্যারিস','ভিয়েনা'],1,'জাতিসংঘের সদর দপ্তর যুক্তরাষ্ট্রের নিউইয়র্কে অবস্থিত।',['bcs','bank','teacher','job']],
+ ['gk','বাংলাদেশের কেন্দ্রীয় ব্যাংকের নাম কী?',['সোনালী ব্যাংক','বাংলাদেশ ব্যাংক','রূপালী ব্যাংক','জনতা ব্যাংক'],1,'বাংলাদেশ ব্যাংক দেশের কেন্দ্রীয় ব্যাংক।',['bank','bcs','job']],
+ ['gk','বাংলাদেশে জাতীয় সংসদের সাধারণ আসন সংখ্যা কত?',['২০০','২৫০','৩০০','৩৫০'],2,'জাতীয় সংসদে ৩০০টি সাধারণ নির্বাচনী আসন রয়েছে; সংরক্ষিত নারী আসন আলাদা।',['bcs','teacher','job']],
+ ['ict','কম্পিউটারে তথ্যের ক্ষুদ্রতম একক কোনটি?',['বাইট','বিট','কিলোবাইট','নিবল'],1,'বিট হলো ডিজিটাল তথ্যের ক্ষুদ্রতম মৌলিক একক।',['bank','bcs','job']],
+ ['ict','নিচের কোনটি স্প্রেডশিট সফটওয়্যার?',['Microsoft Excel','Microsoft Paint','Notepad','VLC'],0,'Microsoft Excel স্প্রেডশিট তৈরি ও হিসাবের জন্য ব্যবহৃত হয়।',['bank','job']],
+ ['science','বিদ্যুৎ প্রবাহের একক অ্যাম্পিয়ার কোন বিজ্ঞানীর নামে?',['নিউটন','ভোল্টা','আঁদ্রে-মারি অ্যাম্পিয়ার','ওহম'],2,'অ্যাম্পিয়ার এককটি বিজ্ঞানী আঁদ্রে-মারি অ্যাম্পিয়ারের নামে।',['bcs','teacher','job']],
+ ['science','মানবদেহে ইনসুলিন কোন অঙ্গ থেকে নিঃসৃত হয়?',['যকৃৎ','অগ্ন্যাশয়','বৃক্ক','পিত্তথলি'],1,'অগ্ন্যাশয়ের বিটা কোষ ইনসুলিন নিঃসরণ করে।',['bcs','teacher','job']],
+ ['gk','বিশ্ব স্বাস্থ্য সংস্থার (WHO) সদর দপ্তর কোথায়?',['রোম','জেনেভা','লন্ডন','নিউইয়র্ক'],1,'WHO-এর সদর দপ্তর সুইজারল্যান্ডের জেনেভায়।',['bcs','teacher','job']],
+ ['english','The passive voice of “They make chairs” is ___.',['Chairs made by them.','Chairs are made by them.','Chairs were made by them.','Chairs are making by them.'],1,'Simple present passive: object + am/is/are + past participle.',['teacher','bcs','job']]
+];
+examExtras.forEach(x=>add(x[0],x[1],x[2],x[3],x[4],x[5]));
 let quiz=[],qi=0,answers=[],finished=false;
 function updateQuizChoices(){
   const exam=$('exam').value, wrap=$('classWrap'), label=$('subjectLabel');
@@ -183,40 +206,44 @@ function updateQuizChoices(){
   wrap.classList.toggle('hidden',!schoolLike);
   label.textContent=schoolLike?'শ্রেণি অনুযায়ী বিষয়':'পরীক্ষাভিত্তিক বিষয়';
   const subject=$('subject');
-  const schoolOptions=[
-    ['all','সকল বিষয়'],['bangla','বাংলা'],['english','English'],['math','গণিত'],['science','বিজ্ঞান'],['gk','বাংলাদেশ ও বিশ্বপরিচয় / সাধারণ জ্ঞান'],['ict','ICT / কম্পিউটার']
-  ];
-  const jobOptions=[
-    ['all','সকল বিষয়'],['bangla','বাংলা'],['english','English'],['math','গণিত'],['gk','সাধারণ জ্ঞান'],['science','সাধারণ বিজ্ঞান'],['ict','ICT / কম্পিউটার']
-  ];
-  const options=schoolLike?schoolOptions:jobOptions;
-  const previous=subject.value;
+  const schoolOptions=[['all','সকল বিষয়'],['bangla','বাংলা'],['english','English'],['math','গণিত'],['science','বিজ্ঞান'],['gk','বাংলাদেশ ও বিশ্বপরিচয় / সাধারণ জ্ঞান'],['ict','ICT / কম্পিউটার']];
+  const jobOptions=[['all','সকল বিষয়'],['bangla','বাংলা'],['english','English'],['math','গণিত'],['gk','সাধারণ জ্ঞান'],['science','সাধারণ বিজ্ঞান'],['ict','ICT / কম্পিউটার']];
+  const options=schoolLike?schoolOptions:jobOptions, previous=subject.value;
   subject.innerHTML=options.map(o=>`<option value="${o[0]}">${o[1]}</option>`).join('');
   subject.value=options.some(o=>o[0]===previous)?previous:'all';
+  updateBankInfo();
 }
-function startQuiz(){
-  const sub=$('subject').value, exam=$('exam').value, count=Number($('questionCount').value), level=$('classLevel').value;
-  let pool=Q.filter(x=>{
-    const subjectOk=(sub==='all'||x.subject===sub);
-    let examOk=true;
-    if(exam==='bcs') examOk=x.exam.includes('bcs')||x.exam.includes('all');
-    else if(exam==='bank') examOk=x.exam.includes('bank')||x.exam.includes('all');
-    else if(exam==='teacher') examOk=x.exam.includes('teacher')||x.exam.includes('all');
-    else if(exam==='otherjob') examOk=x.exam.includes('job')||x.exam.includes('all');
-    else if(exam==='jobprep') examOk=['bcs','bank','teacher','job','all'].some(k=>x.exam.includes(k));
-    else if(exam==='school') examOk=x.exam.includes('school')||x.exam.includes('all');
-    else if(exam==='college') examOk=x.exam.includes('college')||x.exam.includes('all');
-    else if(exam==='admission') examOk=x.exam.includes('admission')||x.exam.includes('all');
-    const levelOk=!['school','college'].includes(exam)||level==='all'||!x.classLevel||x.classLevel==='all'||x.classLevel===level;
-    return subjectOk&&examOk&&levelOk;
+function getQuizPool(){
+  const sub=$('subject').value, exam=$('exam').value;
+  return Q.filter(x=>{
+    const subjectOk=sub==='all'||x.subject===sub;
+    const tags=Array.isArray(x.exam)?x.exam:['all'];
+    let examOk=tags.includes('all');
+    if(exam==='jobprep') examOk=examOk||['bcs','bank','teacher','job'].some(k=>tags.includes(k));
+    else if(exam==='otherjob') examOk=examOk||tags.includes('job');
+    else examOk=examOk||tags.includes(exam);
+    return subjectOk&&examOk;
   });
-  if(!pool.length){alert('এই বাছাইয়ে এখনো প্রশ্ন নেই। “সকল বিষয়” বেছে নাও অথবা প্রশ্নব্যাংকে প্রশ্ন যোগ করো।');return;}
-  if(['school','college'].includes(exam)&&level!=='all'&&!pool.some(x=>x.classLevel===level)){const general=pool.filter(x=>!x.classLevel||x.classLevel==='all');if(general.length)alert('নোট: এই প্রশ্নব্যাংকে এখনো শ্রেণি-নির্দিষ্ট প্রশ্ন কম; সাধারণ প্রশ্ন থেকে টেস্ট তৈরি হবে।');}
-  // Randomize without repeating a question until every question in the selected pool has been used.
-  const shuffle=arr=>{const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
-  quiz=[];
-  while(quiz.length<count){const batch=shuffle(pool);quiz.push(...batch.slice(0,Math.min(batch.length,count-quiz.length)));}
-  quiz=quiz.slice(0,count);
+}
+function updateBankInfo(){
+  const el=$('bankInfo'); if(!el)return;
+  const pool=getQuizPool(), count=Number($('questionCount').value||20);
+  if(!pool.length){el.textContent='এই বাছাইয়ে কোনো প্রশ্ন নেই। অন্য বিষয় বেছে নাও।';return;}
+  const levelNote=['school','college'].includes($('exam').value)&&$('classLevel').value!=='all'?' শ্রেণি-নির্দিষ্ট আলাদা প্রশ্ন এখনো সম্পূর্ণ নয়; সাধারণ অনুশীলন প্রশ্নও থাকবে।':'';
+  el.textContent=`এই বাছাইয়ে ${pool.length}টি আলাদা প্রশ্ন আছে। তুমি ${count}টি প্রশ্ন বেছে নিয়েছ।`+(count>pool.length?` প্রথমে সব ${pool.length}টি প্রশ্ন একবার আসবে; এরপর প্রয়োজন হলে প্রশ্ন পুনরাবৃত্তি হবে।`:'')+levelNote;
+}
+function shuffleArray(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function startQuiz(){
+  const count=Number($('questionCount').value)||20;
+  const pool=getQuizPool();
+  if(!pool.length){alert('এই বাছাইয়ে এখনো প্রশ্ন নেই। অন্য বিষয় বেছে নাও।');return;}
+  // প্রতিটি রাউন্ডে পুরো পুল একবার করে ব্যবহার হয়; পুল শেষ না হওয়া পর্যন্ত কোনো প্রশ্ন পুনরাবৃত্তি হয় না।
+  const selected=[];
+  while(selected.length<count) selected.push(...shuffleArray(pool).slice(0,Math.min(pool.length,count-selected.length)));
+  quiz=selected.slice(0,count).map(q=>{
+    const indices=shuffleArray(q.options.map((_,i)=>i));
+    return {...q, options:indices.map(i=>q.options[i]), answer:indices.indexOf(q.answer)};
+  });
   qi=0;answers=Array(quiz.length).fill(null);finished=false;
   $('quizBox').classList.remove('hidden');$('resultBox').classList.add('hidden');
   renderQuestion();$('quizBox').scrollIntoView({behavior:'smooth',block:'start'});
@@ -233,15 +260,20 @@ function finishQuiz(){
   const percent=Math.round(score/quiz.length*100);
   const best=Number(localStorage.getItem('spBestScore')||0);
   if(percent>best)localStorage.setItem('spBestScore',String(percent));
+  let history=[];try{history=JSON.parse(localStorage.getItem('spQuizHistory')||'[]');if(!Array.isArray(history))history=[];}catch(_){history=[];}
+  history.unshift({date:new Date().toLocaleString('bn-BD'),exam:$('exam').selectedOptions[0].textContent,subject:$('subject').selectedOptions[0].textContent,score,total:quiz.length,percent});
+  localStorage.setItem('spQuizHistory',JSON.stringify(history.slice(0,10)));
   $('bestScore').textContent=Math.max(best,percent)+'%';
   $('resultBox').classList.remove('hidden');
-  $('resultBox').innerHTML=`<h2>📊 পরীক্ষার ফলাফল</h2><div class="stat">${score} / ${quiz.length}</div><p>সঠিক উত্তর: ${score} • ভুল/উত্তর না দেওয়া: ${quiz.length-score} • নম্বর: ${percent}%</p><p>${percent>=80?'দারুণ! এভাবেই চালিয়ে যাও 💙':percent>=50?'ভালো চেষ্টা! ভুলগুলো রিভিউ করে আবার অনুশীলন করো।':'হাল ছেড়ো না—ব্যাখ্যাগুলো পড়ে আবার চেষ্টা করো।'}</p><button onclick="startQuiz()">আবার পরীক্ষা দাও</button> <button onclick="showReview()">উত্তর ও ব্যাখ্যা দেখো</button> <button onclick="showWrongOnly()">শুধু ভুলগুলো দেখো</button><div id="reviewArea"></div>`;
+  $('resultBox').innerHTML=`<h2>📊 পরীক্ষার ফলাফল</h2><div class="stat">${score} / ${quiz.length}</div><p>সঠিক উত্তর: ${score} • ভুল/উত্তর না দেওয়া: ${quiz.length-score} • নম্বর: ${percent}%</p><p>${percent>=80?'দারুণ! এভাবেই চালিয়ে যাও 💙':percent>=50?'ভালো চেষ্টা! ভুলগুলো রিভিউ করে আবার অনুশীলন করো।':'হাল ছেড়ো না—ব্যাখ্যাগুলো পড়ে আবার চেষ্টা করো।'}</p><button onclick="startQuiz()">আবার পরীক্ষা দাও</button> <button onclick="showReview()">উত্তর ও ব্যাখ্যা দেখো</button> <button onclick="showWrongOnly()">শুধু ভুলগুলো দেখো</button><div id="reviewArea"></div><div class="feedback"><b>সাম্প্রতিক পরীক্ষার রেকর্ড</b><div id="historyArea"></div></div>`;
+  renderQuizHistory();
   $('resultBox').scrollIntoView({behavior:'smooth',block:'start'});
 }
+function renderQuizHistory(){const el=$('historyArea');if(!el)return;let h=[];try{h=JSON.parse(localStorage.getItem('spQuizHistory')||'[]');}catch(_){h=[];}el.innerHTML=h.length?h.map(x=>`<p>${esc(x.date)} — ${esc(x.exam)} / ${esc(x.subject)}: <b>${x.score}/${x.total} (${x.percent}%)</b></p>`).join(''):'<p>এখনো কোনো রেকর্ড নেই।</p>';}
 function showWrongOnly(){
   const wrong=quiz.map((q,i)=>({q,i})).filter(x=>answers[x.i]!==x.q.answer);
   $('reviewArea').innerHTML=wrong.length?wrong.map(({q,i})=>`<div class="feedback"><b>${i+1}. ${esc(q.q)}</b><p style="color:var(--bad)">তোমার উত্তর: ${answers[i]===null?'উত্তর দাওনি':esc(q.options[answers[i]])}</p><p style="color:var(--good)">সঠিক উত্তর: ${esc(q.options[q.answer])}</p><p>ব্যাখ্যা: ${esc(q.explanation)}</p></div>`).join(''):'<div class="feedback">অভিনন্দন! কোনো ভুল উত্তর নেই। 🎉</div>';
 }
 function showReview(){$('reviewArea').innerHTML=quiz.map((q,i)=>`<div class="feedback"><b>${i+1}. ${esc(q.q)}</b><p style="color:${answers[i]===q.answer?'var(--good)':'var(--bad)'}">তোমার উত্তর: ${answers[i]===null?'উত্তর দাওনি':esc(q.options[answers[i]])}</p><p style="color:var(--good)">সঠিক উত্তর: ${esc(q.options[q.answer])}</p><p>ব্যাখ্যা: ${esc(q.explanation)}</p></div>`).join('')}
-updateQuizChoices();renderLists();$('bestScore').textContent=localStorage.getItem('spBestScore')?localStorage.getItem('spBestScore')+'%':'—';drawClock();
+updateQuizChoices();$('subject').addEventListener('change',updateBankInfo);$('classLevel').addEventListener('change',updateBankInfo);$('questionCount').addEventListener('change',updateBankInfo);renderLists();$('bestScore').textContent=localStorage.getItem('spBestScore')?localStorage.getItem('spBestScore')+'%':'—';drawClock();
 </script></body></html>
