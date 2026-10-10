@@ -28,7 +28,7 @@ footer{text-align:center;padding:25px;color:var(--muted)}a{color:var(--primary)}
 <body>
 <header><h1>📚 Study Partner</h1><p>পড়াশোনা, রুটিন, টু-ডু ও নিজের পছন্দের প্রশ্নসংখ্যায় মডেল টেস্ট</p></header>
 <nav id="nav">
-<button class="active" data-page="home">ড্যাশবোর্ড</button><button data-page="routine">স্টাডি রুটিন</button><button data-page="todo">To-Do</button><button data-page="timer">Pomodoro</button><button data-page="quiz">কুইজ / মডেল টেস্ট</button><button data-page="jobs">চাকরির সার্কুলার</button><button data-page="ai">AI সহকারী</button><button id="themeBtn">🌙 থিম</button>
+<button class="active" data-page="home">ড্যাশবোর্ড</button><button data-page="routine">স্টাডি রুটিন</button><button data-page="todo">To-Do</button><button data-page="timer">Pomodoro</button><button data-page="quiz">কুইজ / মডেল টেস্ট</button><button data-page="jobs">চাকরির সার্কুলার</button><button id="themeBtn">🌙 থিম</button>
 </nav>
 <main>
 <section class="page active" id="home">
@@ -41,7 +41,7 @@ footer{text-align:center;padding:25px;color:var(--muted)}a{color:var(--primary)}
 </section>
 <section class="page" id="routine"><div class="card"><h2>📅 স্টাডি রুটিন</h2><div class="grid"><div><label>বিষয়</label><input id="rSubject" placeholder="যেমন: গণিত"></div><div><label>সময়</label><input id="rTime" placeholder="যেমন: সকাল ৮টা"></div><div><label>দিন</label><select id="rDay"><option>প্রতিদিন</option><option>শনিবার</option><option>রবিবার</option><option>সোমবার</option><option>মঙ্গলবার</option><option>বুধবার</option><option>বৃহস্পতিবার</option><option>শুক্রবার</option></select></div></div><p><button onclick="addRoutine()">রুটিনে যোগ করো</button></p><div id="routineList"></div></div></section>
 <section class="page" id="todo"><div class="card"><h2>✅ To-Do List</h2><div class="row"><input id="todoInput" placeholder="আজ কী পড়বে বা করবে?"><button onclick="addTodo()">যোগ করো</button></div><div id="todoList"></div></div></section>
-<section class="page" id="timer"><div class="card"><h2>⏱️ Pomodoro Timer</h2><p>২৫ মিনিট পড়ো, তারপর ৫ মিনিট বিরতি নাও।</p><div class="stat" id="clock" style="font-size:54px">25:00</div><div class="row"><button onclick="startTimer()">শুরু</button><button onclick="pauseTimer()">পজ</button><button onclick="resetTimer()">রিসেট</button></div><p id="timerMsg"></p></div></section>
+<section class="page" id="timer"><div class="card"><h2>⏱️ Pomodoro Timer</h2><p>২৫ মিনিট পড়ো, তারপর ৫ মিনিট বিরতি নাও।</p><div class="stat" id="clock" style="font-size:54px">25:00</div><div class="row"><button onclick="startTimer()">শুরু</button><button onclick="pauseTimer()">পজ</button><button onclick="resetTimer()">রিসেট</button><button onclick="setTimerMode(5)">৫ মিনিট বিরতি</button><button onclick="setTimerMode(25)">২৫ মিনিট পড়া</button></div><p id="timerMsg"></p></div></section>
 <section class="page" id="quiz">
 <div class="card"><h2>🎯 নিজের মতো মডেল টেস্ট তৈরি করো</h2><p>প্রতিটি পরীক্ষার জন্য প্রশ্নসংখ্যা নিজের ইচ্ছামতো বেছে নাও।</p>
 <div class="grid">
@@ -53,11 +53,11 @@ footer{text-align:center;padding:25px;color:var(--muted)}a{color:var(--primary)}
 <p class="small">স্কুল/কলেজে শ্রেণি ও বিষয় বেছে নাও; চাকরির পরীক্ষায় পরীক্ষার ধরন ও বিষয় বেছে নাও। প্রতিটি টেস্টে নির্বাচিত সংখ্যক প্রশ্ন থাকবে। কোনো ফিল্টারে প্রশ্ন ১০০টির কম হলে প্রশ্নব্যাংক থেকে পুনরাবৃত্তি হতে পারে—নতুন প্রশ্ন যোগ করলে বৈচিত্র্য বাড়বে।</p>
 <button onclick="startQuiz()">মডেল টেস্ট শুরু</button><p class="small">প্রশ্নব্যাংক বাড়াতে HTML-এর JavaScript অংশে <code>extras</code> তালিকার মতো নতুন প্রশ্ন যোগ করো। প্রতিটি প্রশ্নে বিষয়, অপশন, সঠিক উত্তর এবং ব্যাখ্যা থাকবে।</p>
 </div>
-<div class="card hidden" id="quizBox"><div class="row"><div><b id="progress">প্রশ্ন 1</b></div><div style="text-align:right" id="quizScore">স্কোর: 0</div></div><div id="questionArea"></div><div class="row"><button id="nextBtn" onclick="nextQuestion()">পরের প্রশ্ন</button><button class="hidden" id="finishBtn" onclick="finishQuiz()">ফলাফল দেখো</button></div></div>
+<div class="card hidden" id="quizBox"><div class="row"><div><b id="progress">প্রশ্ন 1</b></div><div style="text-align:right" id="quizScore">স্কোর: 0</div></div><div id="questionArea"></div><div id="questionNav" class="row" style="gap:5px;flex-wrap:wrap;margin:12px 0"></div><div class="row"><button id="prevBtn" onclick="prevQuestion()">আগের প্রশ্ন</button><button id="nextBtn" onclick="nextQuestion()">পরের প্রশ্ন</button><button class="hidden" id="finishBtn" onclick="finishQuiz()">ফলাফল দেখো</button></div></div>
 <div class="card hidden" id="resultBox"></div>
 </section>
 <section class="page" id="jobs"><div class="card"><h2>💼 চাকরির সার্কুলার</h2><p>নতুন বিজ্ঞপ্তি যাচাই করার জন্য নিচের অফিসিয়াল/বিশ্বস্ত ওয়েবসাইটগুলো দেখো। এই অংশ নিজে থেকে লাইভ সার্কুলার সংগ্রহ করে না।</p><ul><li><a href="https://alljobs.teletalk.com.bd/" target="_blank" rel="noopener">All Jobs Teletalk</a></li><li><a href="https://bpsc.gov.bd/" target="_blank" rel="noopener">বাংলাদেশ সরকারি কর্ম কমিশন (BPSC)</a></li><li><a href="https://bdjobs.com/" target="_blank" rel="noopener">Bdjobs</a></li><li><a href="https://erecruitment.bb.org.bd/" target="_blank" rel="noopener">বাংলাদেশ ব্যাংক e-Recruitment</a></li></ul><label>নিজের জন্য সার্কুলার/নোট লিখে রাখো</label><textarea id="jobNote" rows="3" placeholder="পদের নাম, শেষ তারিখ, লিংক..."></textarea><button onclick="saveJobNote()">নোট সেভ</button><p id="jobSaved"></p></div></section>
-<section class="page" id="ai"><div class="card"><h2>🤖 AI Study Assistant</h2><p>এটি একটি অফলাইন ডেমো। এটি সাধারণ পড়ার পরামর্শ দেখায়; বাস্তব AI উত্তর পেতে AI API/backend সংযোগ করতে হবে।</p><label>তোমার প্রশ্ন</label><textarea id="aiQuestion" rows="3" placeholder="যেমন: ৭ দিনের পড়ার রুটিন বানাও"></textarea><button onclick="askDemo()">পরামর্শ দেখাও</button><div class="feedback hidden" id="aiAnswer"></div></div></section>
+
 </main><footer>Study Partner • তোমার পড়াশোনার সঙ্গী</footer>
 <script>
 const $=id=>document.getElementById(id);
@@ -71,8 +71,8 @@ function addTodo(){let t=$('todoInput').value.trim();if(!t)return;todos.push({t,
 function renderLists(){$('routineCount').textContent=routines.length;$('todoCount').textContent=todos.filter(x=>!x.done).length;$('routineList').innerHTML=routines.map((r,i)=>`<div class="feedback">${esc(r.d)} • <b>${esc(r.s)}</b> — ${esc(r.t)} <button onclick="delRoutine(${i})">মুছুন</button></div>`).join('')||'<p>এখনো রুটিন যোগ করা হয়নি।</p>';$('todoList').innerHTML=todos.map((t,i)=>`<div class="feedback"><label><input type="checkbox" style="width:auto" ${t.done?'checked':''} onchange="toggleTodo(${i})"> <span style="${t.done?'text-decoration:line-through':''}">${esc(t.t)}</span></label><button onclick="delTodo(${i})">মুছুন</button></div>`).join('')||'<p>কোনো কাজ যোগ করা হয়নি।</p>'}
 function delRoutine(i){routines.splice(i,1);saveLists()}function delTodo(i){todos.splice(i,1);saveLists()}function toggleTodo(i){todos[i].done=!todos[i].done;saveLists()}
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-let remaining=1500,timer=null;function drawClock(){$('clock').textContent=String(Math.floor(remaining/60)).padStart(2,'0')+':'+String(remaining%60).padStart(2,'0')}
-function startTimer(){if(timer)return;timer=setInterval(()=>{remaining--;drawClock();if(remaining<=0){pauseTimer();$('timerMsg').textContent='সময় শেষ! এবার ৫ মিনিট বিরতি নাও 🎉';}},1000)}function pauseTimer(){clearInterval(timer);timer=null}function resetTimer(){pauseTimer();remaining=1500;drawClock();$('timerMsg').textContent=''}
+let remaining=1500,timer=null,timerMode=25;function setTimerMode(m){pauseTimer();timerMode=m;remaining=m*60;drawClock();$('timerMsg').textContent=m===5?'বিরতির সময় সেট করা হয়েছে।':'পড়ার সময় সেট করা হয়েছে।'}function drawClock(){$('clock').textContent=String(Math.floor(remaining/60)).padStart(2,'0')+':'+String(remaining%60).padStart(2,'0')}
+function startTimer(){if(timer)return;timer=setInterval(()=>{remaining--;drawClock();if(remaining<=0){pauseTimer();$('timerMsg').textContent=timerMode===25?'পড়ার সময় শেষ! এবার ৫ মিনিট বিরতি নাও 🎉':'বিরতি শেষ! এবার পড়া শুরু করো 💪';}},1000)}function pauseTimer(){clearInterval(timer);timer=null}function resetTimer(){pauseTimer();remaining=timerMode*60;drawClock();$('timerMsg').textContent=''}
 function saveJobNote(){$('jobSaved').textContent='নোট সেভ হয়েছে।';localStorage.setItem('spJobNote',$('jobNote').value)}$('jobNote').value=localStorage.getItem('spJobNote')||'';
 function askDemo(){let q=$('aiQuestion').value.trim();if(!q)return;$('aiAnswer').classList.remove('hidden');$('aiAnswer').textContent='পরামর্শ: প্রশ্নটিকে ছোট ছোট অংশে ভাগ করো, ২৫ মিনিট মনোযোগ দিয়ে পড়ো, তারপর বই বন্ধ করে নিজেকে পরীক্ষা করো। নির্দিষ্ট বিষয়ে উত্তর পেতে বাস্তব AI API সংযোগ প্রয়োজন।'}
 /* প্রশ্নব্যাংক সম্প্রসারণ: নিচের কাঠামো অনুসরণ করে নতুন প্রশ্ন যোগ করা যাবে।
@@ -195,7 +195,7 @@ function updateQuizChoices(){
   subject.value=options.some(o=>o[0]===previous)?previous:'all';
 }
 function startQuiz(){
-  const sub=$('subject').value, exam=$('exam').value, count=Number($('questionCount').value);
+  const sub=$('subject').value, exam=$('exam').value, count=Number($('questionCount').value), level=$('classLevel').value;
   let pool=Q.filter(x=>{
     const subjectOk=(sub==='all'||x.subject===sub);
     let examOk=true;
@@ -207,21 +207,41 @@ function startQuiz(){
     else if(exam==='school') examOk=x.exam.includes('school')||x.exam.includes('all');
     else if(exam==='college') examOk=x.exam.includes('college')||x.exam.includes('all');
     else if(exam==='admission') examOk=x.exam.includes('admission')||x.exam.includes('all');
-    return subjectOk&&examOk;
+    const levelOk=!['school','college'].includes(exam)||level==='all'||!x.classLevel||x.classLevel==='all'||x.classLevel===level;
+    return subjectOk&&examOk&&levelOk;
   });
   if(!pool.length){alert('এই বাছাইয়ে এখনো প্রশ্ন নেই। “সকল বিষয়” বেছে নাও অথবা প্রশ্নব্যাংকে প্রশ্ন যোগ করো।');return;}
-  pool=pool.slice().sort(()=>Math.random()-.5);
+  if(['school','college'].includes(exam)&&level!=='all'&&!pool.some(x=>x.classLevel===level)){const general=pool.filter(x=>!x.classLevel||x.classLevel==='all');if(general.length)alert('নোট: এই প্রশ্নব্যাংকে এখনো শ্রেণি-নির্দিষ্ট প্রশ্ন কম; সাধারণ প্রশ্ন থেকে টেস্ট তৈরি হবে।');}
+  // Randomize without repeating a question until every question in the selected pool has been used.
+  const shuffle=arr=>{const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
   quiz=[];
-  while(quiz.length<count){quiz.push(...pool.slice(0,Math.min(pool.length,count-quiz.length)));if(pool.length<count)pool=pool.slice().sort(()=>Math.random()-.5);}
+  while(quiz.length<count){const batch=shuffle(pool);quiz.push(...batch.slice(0,Math.min(batch.length,count-quiz.length)));}
   quiz=quiz.slice(0,count);
   qi=0;answers=Array(quiz.length).fill(null);finished=false;
   $('quizBox').classList.remove('hidden');$('resultBox').classList.add('hidden');
   renderQuestion();$('quizBox').scrollIntoView({behavior:'smooth',block:'start'});
 }
-function renderQuestion(){let q=quiz[qi];$('progress').textContent=`প্রশ্ন ${qi+1} / ${quiz.length}`;$('quizScore').textContent=`উত্তর: ${answers.filter(a=>a!==null).length}`;$('questionArea').innerHTML=`<h3>${esc(q.q)}</h3>${q.options.map((o,i)=>`<button class="option ${answers[qi]===i?'selected':''}" onclick="chooseAnswer(${i})">${'কখগঘ'[i]||i+1}. ${esc(o)}</button>`).join('')}`;$('nextBtn').classList.toggle('hidden',qi===quiz.length-1);$('finishBtn').classList.toggle('hidden',qi!==quiz.length-1)}
-function chooseAnswer(i){answers[qi]=i;renderQuestion()}
-function nextQuestion(){if(qi<quiz.length-1){qi++;renderQuestion()}}
-function finishQuiz(){let score=quiz.reduce((n,q,i)=>n+(answers[i]===q.answer?1:0),0),percent=Math.round(score/quiz.length*100);let best=Number(localStorage.getItem('spBestScore')||0);if(percent>best){localStorage.setItem('spBestScore',percent);best=percent}$('bestScore').textContent=best+'%';$('resultBox').classList.remove('hidden');$('resultBox').innerHTML=`<h2>📊 পরীক্ষার ফলাফল</h2><div class="stat">${score} / ${quiz.length}</div><p>সঠিক উত্তর: ${score} • ভুল/উত্তর না দেওয়া: ${quiz.length-score} • নম্বর: ${percent}%</p><button onclick="startQuiz()">আবার পরীক্ষা দাও</button> <button onclick="showReview()">উত্তর ও ব্যাখ্যা দেখো</button><div id="reviewArea"></div>`;$('resultBox').scrollIntoView({behavior:'smooth',block:'start'})}
+function renderQuestion(){let q=quiz[qi];$('progress').textContent=`প্রশ্ন ${qi+1} / ${quiz.length}`;$('quizScore').textContent=`উত্তর: ${answers.filter(a=>a!==null).length}`;$('questionArea').innerHTML=`<h3>${esc(q.q)}</h3>${q.options.map((o,i)=>`<button class="option ${answers[qi]===i?'selected':''}" onclick="chooseAnswer(${i})">${'কখগঘ'[i]||i+1}. ${esc(o)}</button>`).join('')}`;$('prevBtn').classList.toggle('hidden',qi===0);$('nextBtn').classList.toggle('hidden',qi===quiz.length-1);$('finishBtn').classList.toggle('hidden',qi!==quiz.length-1);$('questionNav').innerHTML=quiz.map((_,i)=>`<button onclick="goQuestion(${i})" style="padding:7px 10px;background:${i===qi?'var(--primary)':answers[i]!==null?'var(--good)':'var(--muted)'}">${i+1}</button>`).join('')}
+function chooseAnswer(i){if(finished)return;answers[qi]=i;renderQuestion()}
+function nextQuestion(){if(qi<quiz.length-1){qi++;renderQuestion()}}function prevQuestion(){if(qi>0){qi--;renderQuestion()}}function goQuestion(i){if(i>=0&&i<quiz.length){qi=i;renderQuestion()}}
+function finishQuiz(){
+  if(!quiz.length||finished)return;
+  const unanswered=answers.filter(a=>a===null).length;
+  if(unanswered&&!confirm(`${unanswered}টি প্রশ্নের উত্তর দেওয়া হয়নি। তবুও ফলাফল দেখতে চাও?`))return;
+  finished=true;
+  const score=quiz.reduce((n,q,i)=>n+(answers[i]===q.answer?1:0),0);
+  const percent=Math.round(score/quiz.length*100);
+  const best=Number(localStorage.getItem('spBestScore')||0);
+  if(percent>best)localStorage.setItem('spBestScore',String(percent));
+  $('bestScore').textContent=Math.max(best,percent)+'%';
+  $('resultBox').classList.remove('hidden');
+  $('resultBox').innerHTML=`<h2>📊 পরীক্ষার ফলাফল</h2><div class="stat">${score} / ${quiz.length}</div><p>সঠিক উত্তর: ${score} • ভুল/উত্তর না দেওয়া: ${quiz.length-score} • নম্বর: ${percent}%</p><p>${percent>=80?'দারুণ! এভাবেই চালিয়ে যাও 💙':percent>=50?'ভালো চেষ্টা! ভুলগুলো রিভিউ করে আবার অনুশীলন করো।':'হাল ছেড়ো না—ব্যাখ্যাগুলো পড়ে আবার চেষ্টা করো।'}</p><button onclick="startQuiz()">আবার পরীক্ষা দাও</button> <button onclick="showReview()">উত্তর ও ব্যাখ্যা দেখো</button> <button onclick="showWrongOnly()">শুধু ভুলগুলো দেখো</button><div id="reviewArea"></div>`;
+  $('resultBox').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function showWrongOnly(){
+  const wrong=quiz.map((q,i)=>({q,i})).filter(x=>answers[x.i]!==x.q.answer);
+  $('reviewArea').innerHTML=wrong.length?wrong.map(({q,i})=>`<div class="feedback"><b>${i+1}. ${esc(q.q)}</b><p style="color:var(--bad)">তোমার উত্তর: ${answers[i]===null?'উত্তর দাওনি':esc(q.options[answers[i]])}</p><p style="color:var(--good)">সঠিক উত্তর: ${esc(q.options[q.answer])}</p><p>ব্যাখ্যা: ${esc(q.explanation)}</p></div>`).join(''):'<div class="feedback">অভিনন্দন! কোনো ভুল উত্তর নেই। 🎉</div>';
+}
 function showReview(){$('reviewArea').innerHTML=quiz.map((q,i)=>`<div class="feedback"><b>${i+1}. ${esc(q.q)}</b><p style="color:${answers[i]===q.answer?'var(--good)':'var(--bad)'}">তোমার উত্তর: ${answers[i]===null?'উত্তর দাওনি':esc(q.options[answers[i]])}</p><p style="color:var(--good)">সঠিক উত্তর: ${esc(q.options[q.answer])}</p><p>ব্যাখ্যা: ${esc(q.explanation)}</p></div>`).join('')}
 updateQuizChoices();renderLists();$('bestScore').textContent=localStorage.getItem('spBestScore')?localStorage.getItem('spBestScore')+'%':'—';drawClock();
 </script></body></html>
