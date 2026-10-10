@@ -1,33 +1,227 @@
-<!doctype html>
-<html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0e766e"><title>Study Partner</title>
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Study Partner — Complete Quiz System</title>
 <style>
-:root{--bg:#f4f8f7;--card:#fff;--soft:#e7f5f1;--text:#16332f;--muted:#647a75;--p:#0e766e;--border:#dce9e5}body.dark{--bg:#0e1716;--card:#172422;--soft:#203632;--text:#effaf7;--muted:#a8bfba;--p:#75d8c5;--border:#2b4540}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,"Noto Sans Bengali",sans-serif}button,input,select,textarea{font:inherit}button{border:0;border-radius:11px;padding:10px 13px;background:var(--p);color:white;font-weight:700;cursor:pointer}button.alt{background:var(--soft);color:var(--text)}.app{max-width:1000px;margin:auto;padding:14px}.top,.row,.nav{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.top{justify-content:space-between}.brand{display:flex;gap:10px;align-items:center}.logo{background:var(--p);color:white;padding:10px;border-radius:13px;font-size:24px}.brand h1{margin:0;font-size:1.25rem}.brand p{margin:0;color:var(--muted);font-size:.85rem}.hero{background:var(--p);color:white;border-radius:20px;padding:20px;margin:16px 0}.hero h2{margin:0 0 5px}.stats,.grid{display:grid;gap:10px}.stats{grid-template-columns:repeat(4,1fr);margin-top:16px}.stat{background:#ffffff20;border-radius:12px;padding:10px}.stat strong{display:block;font-size:1.3rem}.stat span{font-size:.8rem}.nav{overflow-x:auto;flex-wrap:nowrap;margin-bottom:14px}.nav button{white-space:nowrap;background:var(--card);color:var(--text);border:1px solid var(--border)}.nav button.active{background:var(--p);color:white}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.panel{display:none}.panel.active{display:block}.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:15px;min-width:0}.card h3{margin:0 0 12px}.field{display:grid;gap:5px;margin:9px 0}.field input,.field select,.field textarea,.row input,.row select{width:100%;min-width:0;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:10px;padding:10px}.row>*{flex:1}.muted,small{color:var(--muted)}.list{display:grid;gap:8px}.item{display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--border);border-radius:11px;padding:9px}.item .txt{flex:1;overflow-wrap:anywhere}.item small{display:block}.item.done .txt{text-decoration:line-through;color:var(--muted)}.item button{padding:6px 9px}.empty,.note{padding:12px;border-radius:10px;background:var(--soft);color:var(--muted)}.timer{text-align:center;padding:15px}.clock{font-size:clamp(3rem,12vw,5rem);font-weight:800;margin:16px 0}.bar{height:8px;background:var(--soft);border-radius:99px;overflow:hidden}.bar div{height:100%;background:var(--p);width:0}.chat{height:280px;overflow:auto;display:flex;flex-direction:column;gap:8px;background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:10px}.bubble{padding:10px;border-radius:12px;max-width:90%;white-space:pre-wrap}.bot{align-self:flex-start;background:var(--soft)}.user{align-self:flex-end;background:var(--p);color:white}.q{border:1px solid var(--border);border-radius:12px;padding:12px;margin:10px 0}.opt{display:flex;gap:8px;padding:5px}.opt input{width:auto}.foot{text-align:center;color:var(--muted);padding:20px;font-size:.82rem}@media(max-width:650px){.grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.app{padding:10px}}
-</style></head><body><main class="app">
-<header class="top"><div class="brand"><div class="logo">📚</div><div><h1>Study Partner</h1><p>তোমার ব্যক্তিগত পড়ার সঙ্গী</p></div></div><button class="alt" id="theme">🌙 Dark Mode</button></header>
-<section class="hero"><h2>আজকের পড়াশোনায় এগিয়ে যাও! ✨</h2><p>রুটিন, কাজের তালিকা, ফোকাস টাইমার এবং কুইজ—সব এক জায়গায়।</p><div class="stats"><div class="stat"><strong id="sDone">0</strong><span>কাজ সম্পন্ন</span></div><div class="stat"><strong id="sRoutine">0</strong><span>রুটিন বিষয়</span></div><div class="stat"><strong id="sFocus">0</strong><span>ফোকাস মিনিট</span></div><div class="stat"><strong id="sQuiz">—</strong><span>শেষ কুইজ</span></div></div></section>
-<nav class="nav"><button class="active" data-tab="home">🏠 হোম</button><button data-tab="routine">🗓️ রুটিন</button><button data-tab="todo">✅ To-Do</button><button data-tab="timer">⏱️ টাইমার</button><button data-tab="quiz">📝 কুইজ</button><button data-tab="ai">🤖 AI Assistant</button></nav>
-<section class="panel active" id="home"><div class="grid"><div class="card"><h3>🎯 আজকের কাজ</h3><div class="bar"><div id="progress"></div></div><p id="progressText" class="muted">কোনো কাজ যোগ করা হয়নি।</p><button onclick="tab('todo')">To-Do খুলুন</button></div><div class="card"><h3>⏱️ ফোকাস টাইমার</h3><div class="clock" id="miniClock">25:00</div><button onclick="tab('timer')">টাইমার চালু করুন</button></div><div class="card"><h3>🗓️ আসন্ন রুটিন</h3><div id="homeRoutines" class="list"></div><p><button class="alt" onclick="tab('routine')">রুটিন যোগ করুন</button></p></div><div class="card"><h3>💡 পড়ার টিপস</h3><p id="tip">২৫ মিনিট মনোযোগ দিয়ে পড়ো, তারপর ৫ মিনিট বিরতি নাও।</p><button class="alt" id="newTip">আরেকটি টিপস</button></div></div></section>
-<section class="panel" id="routine"><div class="grid"><div class="card"><h3>নতুন রুটিন যোগ করো</h3><form id="rf"><label class="field">বিষয় / অধ্যায়<input id="rs" required maxlength="100" placeholder="যেমন: তড়িৎগতিবিদ্যা"></label><div class="row"><label class="field">সময়<input id="rt" type="time" value="19:00" required></label><label class="field">মিনিট<input id="rd" type="number" min="5" max="600" value="45" required></label></div><label class="field">দিন<select id="rday"><option>প্রতিদিন</option><option>শনিবার</option><option>রবিবার</option><option>সোমবার</option><option>মঙ্গলবার</option><option>বুধবার</option><option>বৃহস্পতিবার</option><option>শুক্রবার</option></select></label><button>＋ রুটিন যোগ করো</button></form></div><div class="card"><h3>তোমার রুটিন</h3><div id="rlist" class="list"></div></div></div></section>
-<section class="panel" id="todo"><div class="grid"><div class="card"><h3>নতুন কাজ যোগ করো</h3><form id="tf"><label class="field">কাজের নাম<input id="ti" required maxlength="160" placeholder="যেমন: অধ্যায় ২ অনুশীলন"></label><label class="field">গুরুত্ব<select id="tp"><option>সাধারণ</option><option>জরুরি</option><option>কম</option></select></label><button>＋ কাজ যোগ করো</button></form></div><div class="card"><h3>কাজের তালিকা</h3><div class="row"><select id="filter"><option value="all">সব কাজ</option><option value="open">বাকি কাজ</option><option value="done">সম্পন্ন কাজ</option></select><button class="alt" id="clearDone">সম্পন্ন মুছুন</button></div><div id="tlist" class="list" style="margin-top:10px"></div></div></div></section>
-<section class="panel" id="timer"><div class="grid"><div class="card"><h3>ফোকাস টাইমার</h3><div class="timer"><div class="row"><button id="studyMode">📖 পড়া ২৫ মিনিট</button><button class="alt" id="breakMode">☕ বিরতি ৫ মিনিট</button></div><div class="clock" id="clock">25:00</div><p id="timerLabel" class="muted">ফোকাস করে পড়া শুরু করো।</p><button id="start">▶ Start</button> <button class="alt" id="pause">⏸ Pause</button> <button class="alt" id="reset">↺ Reset</button></div></div><div class="card"><h3>টাইমার টিপস</h3><p>নোটিফিকেশন বন্ধ রাখো, একবারে একটি কাজ করো, সেশন শেষে ছোট বিরতি নাও।</p><div class="note">ফোকাস মিনিট যোগ হবে যখন ২৫ মিনিটের পড়ার সেশন সম্পূর্ণ হবে।</div><p>মোট ফোকাস মিনিট: <strong id="focusTotal">0</strong></p></div></div></section>
-<section class="panel" id="quiz"><div class="grid"><div class="card"><h3>📝 নমুনা বিজ্ঞান ও সাধারণ জ্ঞান কুইজ</h3><p class="muted">উত্তর নির্বাচন করে ফলাফল দেখো। পরে নিজের সিলেবাস অনুযায়ী প্রশ্ন বাড়ানো যাবে।</p><div id="questions"></div><button id="submitQuiz">ফলাফল দেখাও</button><div id="quizResult" style="font-weight:800;margin-top:12px"></div><button class="alt" id="retry" style="display:none">আবার চেষ্টা করো</button></div><div class="card"><h3>📈 অগ্রগতি</h3><p>শেষ কুইজ: <strong id="lastQuiz">এখনো হয়নি</strong></p><p>সম্পন্ন কাজ: <strong id="doneCount">0</strong></p><p>রুটিন বিষয়: <strong id="routineCount">0</strong></p><div class="note">তথ্য একই ব্রাউজারের localStorage-এ থাকে। ব্রাউজারের ডেটা মুছলে হারাতে পারে।</div></div></div></section>
-<section class="panel" id="ai"><div class="grid"><div class="card"><h3>🤖 Study Assistant</h3><div class="note"><strong>নোট:</strong> এটি আপাতত ডেমো সহকারী, সত্যিকারের AI-তে যুক্ত নয়। সত্যিকারের AI চালাতে নিরাপদ backend ও API key সেটআপ প্রয়োজন। API key HTML ফাইলে রাখবে না।</div><div class="chat" id="messages"><div class="bubble bot">হ্যালো! রুটিন, ফোকাস বা পরীক্ষার প্রস্তুতি নিয়ে প্রশ্ন করো। আমি এখন ডেমো মোডে আছি।</div></div><form id="chatForm"><label class="field">তোমার প্রশ্ন<textarea id="chatInput" rows="2" maxlength="500" required placeholder="যেমন: ৭ দিনে পরীক্ষার প্রস্তুতি কীভাবে নেব?"></textarea></label><button>পাঠাও</button></form></div><div class="card"><h3>সত্যিকারের AI-তে যা যোগ হবে</h3><ul><li>পড়ার প্রশ্নের AI উত্তর</li><li>নিজের সিলেবাস থেকে কুইজ</li><li>ব্যক্তিগত পড়ার পরিকল্পনা</li><li>কঠিন বিষয় সহজ ব্যাখ্যা</li></ul><p class="muted">এর জন্য AI provider-এর API এবং server-side backend লাগবে।</p></div></div></section>
-<footer class="foot">Study Partner • তোমার পড়া, তোমার অগ্রগতি ❤️</footer></main>
+:root{--bg:#f4f7fb;--card:#fff;--text:#172033;--muted:#64748b;--primary:#315efb;--line:#e2e8f0;--good:#15803d;--bad:#b91c1c}
+body.dark{--bg:#101827;--card:#1b2638;--text:#edf2ff;--muted:#a8b4c7;--line:#334155;--primary:#7894ff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Noto Sans Bengali",sans-serif}
+header{padding:20px 16px;background:linear-gradient(120deg,#2448db,#6b43d6);color:white}
+header h1{margin:0 0 6px;font-size:25px}header p{margin:0;opacity:.9}
+nav{display:flex;gap:8px;overflow:auto;padding:10px;background:var(--card);position:sticky;top:0;z-index:2;border-bottom:1px solid var(--line)}
+button,.btn{border:0;border-radius:10px;padding:10px 13px;background:var(--primary);color:white;font-weight:650;cursor:pointer}
+nav button{white-space:nowrap;background:var(--bg);color:var(--text);border:1px solid var(--line)}nav button.active{background:var(--primary);color:white}
+main{max-width:1000px;margin:auto;padding:16px}.page{display:none}.page.active{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin:0 0 14px;box-shadow:0 4px 18px #00000008}
+h2{margin-top:0;font-size:21px}h3{margin:8px 0}p,.muted{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+label{display:block;font-weight:650;margin:10px 0 6px}input,select,textarea{width:100%;padding:11px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--text);font:inherit}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.row>*{flex:1}.small{font-size:13px}.stat{font-size:27px;font-weight:800}
+.option{display:block;width:100%;text-align:left;background:var(--bg);color:var(--text);border:1px solid var(--line);margin:8px 0;padding:12px;font-weight:500}
+.option.selected{border:2px solid var(--primary)}.option.correct{border:2px solid var(--good)}.option.wrong{border:2px solid var(--bad)}
+.feedback{padding:12px;border-radius:10px;background:var(--bg);margin:10px 0}.hidden{display:none!important}
+footer{text-align:center;padding:25px;color:var(--muted)}a{color:var(--primary)}
+</style>
+</head>
+<body>
+<header><h1>📚 Study Partner</h1><p>পড়াশোনা, রুটিন, টু-ডু ও নিজের পছন্দের প্রশ্নসংখ্যায় মডেল টেস্ট</p></header>
+<nav id="nav">
+<button class="active" data-page="home">ড্যাশবোর্ড</button><button data-page="routine">স্টাডি রুটিন</button><button data-page="todo">To-Do</button><button data-page="timer">Pomodoro</button><button data-page="quiz">কুইজ / মডেল টেস্ট</button><button data-page="jobs">চাকরির সার্কুলার</button><button data-page="ai">AI সহকারী</button><button id="themeBtn">🌙 থিম</button>
+</nav>
+<main>
+<section class="page active" id="home">
+<div class="grid">
+<div class="card"><p>আজকের লক্ষ্য</p><div class="stat" id="todoCount">0</div><span class="muted">অসম্পূর্ণ কাজ</span></div>
+<div class="card"><p>রুটিনে বিষয়</p><div class="stat" id="routineCount">0</div><span class="muted">যোগ করা হয়েছে</span></div>
+<div class="card"><p>সেরা কুইজ স্কোর</p><div class="stat" id="bestScore">—</div><span class="muted">সর্বশেষ সংরক্ষিত রেকর্ড</span></div>
+</div>
+<div class="card"><h2>স্বাগতম! 💙</h2><p>কুইজে পরীক্ষা/চাকরির ধরন, বিষয় এবং প্রশ্নসংখ্যা বেছে নিয়ে মডেল টেস্ট দাও। প্রশ্নের উত্তর দেওয়ার পরে সঠিক উত্তর ও ব্যাখ্যা দেখতে পারবে।</p><button onclick="showPage('quiz')">কুইজ শুরু করো</button></div>
+</section>
+<section class="page" id="routine"><div class="card"><h2>📅 স্টাডি রুটিন</h2><div class="grid"><div><label>বিষয়</label><input id="rSubject" placeholder="যেমন: গণিত"></div><div><label>সময়</label><input id="rTime" placeholder="যেমন: সকাল ৮টা"></div><div><label>দিন</label><select id="rDay"><option>প্রতিদিন</option><option>শনিবার</option><option>রবিবার</option><option>সোমবার</option><option>মঙ্গলবার</option><option>বুধবার</option><option>বৃহস্পতিবার</option><option>শুক্রবার</option></select></div></div><p><button onclick="addRoutine()">রুটিনে যোগ করো</button></p><div id="routineList"></div></div></section>
+<section class="page" id="todo"><div class="card"><h2>✅ To-Do List</h2><div class="row"><input id="todoInput" placeholder="আজ কী পড়বে বা করবে?"><button onclick="addTodo()">যোগ করো</button></div><div id="todoList"></div></div></section>
+<section class="page" id="timer"><div class="card"><h2>⏱️ Pomodoro Timer</h2><p>২৫ মিনিট পড়ো, তারপর ৫ মিনিট বিরতি নাও।</p><div class="stat" id="clock" style="font-size:54px">25:00</div><div class="row"><button onclick="startTimer()">শুরু</button><button onclick="pauseTimer()">পজ</button><button onclick="resetTimer()">রিসেট</button></div><p id="timerMsg"></p></div></section>
+<section class="page" id="quiz">
+<div class="card"><h2>🎯 নিজের মতো মডেল টেস্ট তৈরি করো</h2><p>প্রতিটি পরীক্ষার জন্য প্রশ্নসংখ্যা নিজের ইচ্ছামতো বেছে নাও।</p>
+<div class="grid">
+<div><label>পরীক্ষার ধরন</label><select id="exam" onchange="updateQuizChoices()"><option value="jobprep" selected>সব চাকরির প্রস্তুতি</option><option value="school">স্কুল/বোর্ড পরীক্ষা</option><option value="college">কলেজ/HSC</option><option value="admission">বিশ্ববিদ্যালয় ভর্তি</option><option value="bcs">BCS</option><option value="bank">ব্যাংক নিয়োগ</option><option value="teacher">শিক্ষক নিয়োগ</option><option value="otherjob">অন্যান্য চাকরি</option></select></div>
+<div id="classWrap" class="hidden"><label>শ্রেণি / লেভেল</label><select id="classLevel"><option value="all">সব শ্রেণি</option><option value="1">প্রথম শ্রেণি</option><option value="2">দ্বিতীয় শ্রেণি</option><option value="3">তৃতীয় শ্রেণি</option><option value="4">চতুর্থ শ্রেণি</option><option value="5">পঞ্চম শ্রেণি</option><option value="6">ষষ্ঠ শ্রেণি</option><option value="7">সপ্তম শ্রেণি</option><option value="8">অষ্টম শ্রেণি</option><option value="9">নবম শ্রেণি</option><option value="10">দশম শ্রেণি</option><option value="11">একাদশ শ্রেণি</option><option value="12">দ্বাদশ শ্রেণি</option><option value="hsc">HSC/কলেজ</option></select></div>
+<div><label id="subjectLabel">পরীক্ষাভিত্তিক বিষয়</label><select id="subject"><option value="all">সকল বিষয়</option><option value="bangla">বাংলা</option><option value="english">English</option><option value="math">গণিত</option><option value="gk">সাধারণ জ্ঞান</option><option value="science">সাধারণ বিজ্ঞান</option><option value="ict">ICT / কম্পিউটার</option></select></div>
+<div><label>প্রশ্নসংখ্যা</label><select id="questionCount"><option>20</option><option>25</option><option>30</option><option>50</option><option>60</option><option selected>100</option></select></div>
+</div>
+<p class="small">স্কুল/কলেজে শ্রেণি ও বিষয় বেছে নাও; চাকরির পরীক্ষায় পরীক্ষার ধরন ও বিষয় বেছে নাও। প্রতিটি টেস্টে নির্বাচিত সংখ্যক প্রশ্ন থাকবে। কোনো ফিল্টারে প্রশ্ন ১০০টির কম হলে প্রশ্নব্যাংক থেকে পুনরাবৃত্তি হতে পারে—নতুন প্রশ্ন যোগ করলে বৈচিত্র্য বাড়বে।</p>
+<button onclick="startQuiz()">মডেল টেস্ট শুরু</button><p class="small">প্রশ্নব্যাংক বাড়াতে HTML-এর JavaScript অংশে <code>extras</code> তালিকার মতো নতুন প্রশ্ন যোগ করো। প্রতিটি প্রশ্নে বিষয়, অপশন, সঠিক উত্তর এবং ব্যাখ্যা থাকবে।</p>
+</div>
+<div class="card hidden" id="quizBox"><div class="row"><div><b id="progress">প্রশ্ন 1</b></div><div style="text-align:right" id="quizScore">স্কোর: 0</div></div><div id="questionArea"></div><div class="row"><button id="nextBtn" onclick="nextQuestion()">পরের প্রশ্ন</button><button class="hidden" id="finishBtn" onclick="finishQuiz()">ফলাফল দেখো</button></div></div>
+<div class="card hidden" id="resultBox"></div>
+</section>
+<section class="page" id="jobs"><div class="card"><h2>💼 চাকরির সার্কুলার</h2><p>নতুন বিজ্ঞপ্তি যাচাই করার জন্য নিচের অফিসিয়াল/বিশ্বস্ত ওয়েবসাইটগুলো দেখো। এই অংশ নিজে থেকে লাইভ সার্কুলার সংগ্রহ করে না।</p><ul><li><a href="https://alljobs.teletalk.com.bd/" target="_blank" rel="noopener">All Jobs Teletalk</a></li><li><a href="https://bpsc.gov.bd/" target="_blank" rel="noopener">বাংলাদেশ সরকারি কর্ম কমিশন (BPSC)</a></li><li><a href="https://bdjobs.com/" target="_blank" rel="noopener">Bdjobs</a></li><li><a href="https://erecruitment.bb.org.bd/" target="_blank" rel="noopener">বাংলাদেশ ব্যাংক e-Recruitment</a></li></ul><label>নিজের জন্য সার্কুলার/নোট লিখে রাখো</label><textarea id="jobNote" rows="3" placeholder="পদের নাম, শেষ তারিখ, লিংক..."></textarea><button onclick="saveJobNote()">নোট সেভ</button><p id="jobSaved"></p></div></section>
+<section class="page" id="ai"><div class="card"><h2>🤖 AI Study Assistant</h2><p>এটি একটি অফলাইন ডেমো। এটি সাধারণ পড়ার পরামর্শ দেখায়; বাস্তব AI উত্তর পেতে AI API/backend সংযোগ করতে হবে।</p><label>তোমার প্রশ্ন</label><textarea id="aiQuestion" rows="3" placeholder="যেমন: ৭ দিনের পড়ার রুটিন বানাও"></textarea><button onclick="askDemo()">পরামর্শ দেখাও</button><div class="feedback hidden" id="aiAnswer"></div></div></section>
+</main><footer>Study Partner • তোমার পড়াশোনার সঙ্গী</footer>
 <script>
-const $=id=>document.getElementById(id),load=(k,d)=>{try{let x=localStorage.getItem(k);return x===null?d:JSON.parse(x)}catch{return d}},save=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}},esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let routines=load('sp_routines',[]),todos=load('sp_todos',[]),focus=load('sp_focus',0),quizScore=load('sp_quiz',null),mode='study',secs=1500,interval=null,running=false;
-function tab(id){document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===id));document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));window.scrollTo({top:0,behavior:'smooth'})}window.tab=tab;document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>tab(b.dataset.tab));
-function renderR(){let arr=[...routines].sort((a,b)=>a.time.localeCompare(b.time));$('rlist').innerHTML=arr.length?arr.map(r=>`<div class="item"><div class="txt"><strong>${esc(r.subject)}</strong><small>${esc(r.day)} • ${esc(r.time)} • ${r.duration} মিনিট</small></div><button data-rdel="${r.id}" class="alt">মুছুন</button></div>`).join(''):'<div class="empty">এখনো কোনো রুটিন নেই।</div>';$('homeRoutines').innerHTML=arr.slice(0,3).map(r=>`<div class="item"><div class="txt"><strong>${esc(r.subject)}</strong><small>${esc(r.time)} • ${r.duration} মিনিট</small></div></div>`).join('')||'<div class="empty">রুটিন যোগ করো।</div>';document.querySelectorAll('[data-rdel]').forEach(b=>b.onclick=()=>{routines=routines.filter(r=>r.id!==b.dataset.rdel);save('sp_routines',routines);render()})}
-function renderT(){let f=$('filter').value,arr=todos.filter(t=>f==='all'||(f==='done'?t.done:!t.done));$('tlist').innerHTML=arr.length?arr.map(t=>`<div class="item ${t.done?'done':''}"><input type="checkbox" data-tdone="${t.id}" ${t.done?'checked':''}><div class="txt">${esc(t.text)}<small>${esc(t.priority)} গুরুত্ব</small></div><button class="alt" data-tdel="${t.id}">×</button></div>`).join(''):'<div class="empty">এই তালিকায় কোনো কাজ নেই।</div>';document.querySelectorAll('[data-tdone]').forEach(b=>b.onchange=()=>{todos=todos.map(t=>t.id===b.dataset.tdone?{...t,done:b.checked}:t);save('sp_todos',todos);render()});document.querySelectorAll('[data-tdel]').forEach(b=>b.onclick=()=>{todos=todos.filter(t=>t.id!==b.dataset.tdel);save('sp_todos',todos);render()});let done=todos.filter(t=>t.done).length,p=todos.length?Math.round(done/todos.length*100):0;$('progress').style.width=p+'%';$('progressText').textContent=todos.length?`${done}/${todos.length} কাজ সম্পন্ন (${p}%)`:'কোনো কাজ যোগ করা হয়নি।'}
-function render(){renderR();renderT();let d=todos.filter(t=>t.done).length;$('sDone').textContent=d;$('sRoutine').textContent=routines.length;$('sFocus').textContent=focus;$('sQuiz').textContent=quizScore===null?'—':quizScore+'%';$('focusTotal').textContent=focus;$('doneCount').textContent=d;$('routineCount').textContent=routines.length;$('lastQuiz').textContent=quizScore===null?'এখনো হয়নি':quizScore+'%'}
-$('rf').onsubmit=e=>{e.preventDefault();routines.push({id:String(Date.now()),subject:$('rs').value.trim(),time:$('rt').value,duration:Math.max(5,Number($('rd').value)||45),day:$('rday').value});save('sp_routines',routines);$('rf').reset();$('rt').value='19:00';$('rd').value=45;render()};
-$('tf').onsubmit=e=>{e.preventDefault();todos.push({id:String(Date.now()),text:$('ti').value.trim(),priority:$('tp').value,done:false});save('sp_todos',todos);$('ti').value='';render()};$('filter').onchange=renderT;$('clearDone').onclick=()=>{todos=todos.filter(t=>!t.done);save('sp_todos',todos);render()};
-function fmt(n){return String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0')}function updateClock(){$('clock').textContent=fmt(secs);$('miniClock').textContent=fmt(secs);$('start').disabled=running;$('pause').disabled=!running}
-function setMode(m){mode=m;secs=m==='study'?1500:300;clearInterval(interval);interval=null;running=false;updateClock();$('timerLabel').textContent=m==='study'?'ফোকাস করে পড়া শুরু করো।':'বিরতি নাও, একটু বিশ্রাম করো।'}$('studyMode').onclick=()=>setMode('study');$('breakMode').onclick=()=>setMode('break');$('start').onclick=()=>{if(running)return;running=true;updateClock();interval=setInterval(()=>{secs--;if(secs<=0){secs=0;clearInterval(interval);interval=null;running=false;if(mode==='study'){focus+=25;save('sp_focus',focus);$('timerLabel').textContent='দারুণ! ২৫ মিনিট পড়া সম্পন্ন।';render()}else $('timerLabel').textContent='বিরতি শেষ! আবার পড়া শুরু করো।';updateClock()}else updateClock()},1000)};$('pause').onclick=()=>{clearInterval(interval);interval=null;running=false;updateClock();$('timerLabel').textContent='টাইমার Pause করা হয়েছে।'};$('reset').onclick=()=>setMode(mode);
-$('theme').onclick=()=>{document.body.classList.toggle('dark');let d=document.body.classList.contains('dark');$('theme').textContent=d?'☀️ Light Mode':'🌙 Dark Mode';save('sp_dark',d)};if(load('sp_dark',false)){document.body.classList.add('dark');$('theme').textContent='☀️ Light Mode'}
-const tips=['২৫ মিনিট মনোযোগ দিয়ে পড়ো, তারপর ৫ মিনিট বিরতি নাও।','পড়ার শেষে বই বন্ধ করে নিজের ভাষায় বিষয়টি মনে করার চেষ্টা করো।','কঠিন বিষয় ছোট ছোট অংশে ভাগ করো।','আজকের তিনটি জরুরি কাজ আগে ঠিক করো।','শুধু পড়ে নয়, লিখে ও প্রশ্ন সমাধান করে অনুশীলন করো।'];$('newTip').onclick=()=>$('tip').textContent=tips[Math.floor(Math.random()*tips.length)];
-const qs=[{q:'বিদ্যুৎ প্রবাহের SI একক কোনটি?',o:['ভোল্ট','অ্যাম্পিয়ার','ওহম','ওয়াট'],a:1},{q:'উদ্ভিদ সাধারণত কোন প্রক্রিয়ায় খাদ্য তৈরি করে?',o:['শ্বসন','বাষ্পীভবন','সালোকসংশ্লেষণ','পরিপাক'],a:2},{q:'পানির রাসায়নিক সংকেত কী?',o:['CO₂','O₂','NaCl','H₂O'],a:3},{q:'কম্পিউটারের CPU-কে কী বলা হয়?',o:['কম্পিউটারের মস্তিষ্ক','মেমোরি কার্ড','মনিটর','কিবোর্ড'],a:0},{q:'এক ঘণ্টায় কত মিনিট?',o:['৩০','৪৫','৬০','১০০'],a:2}];
-function makeQuiz(){$('questions').innerHTML=qs.map((q,i)=>`<div class="q"><strong>${i+1}. ${esc(q.q)}</strong>${q.o.map((o,j)=>`<label class="opt"><input type="radio" name="q${i}" value="${j}"><span>${esc(o)}</span></label>`).join('')}</div>`).join('');$('quizResult').textContent='';$('retry').style.display='none';$('submitQuiz').style.display='inline-block'}$('submitQuiz').onclick=()=>{let c=0,n=0;qs.forEach((q,i)=>{let x=document.querySelector(`input[name=q${i}]:checked`);if(x){n++;if(+x.value===q.a)c++}});if(!n){$('quizResult').textContent='আগে অন্তত একটি উত্তর নির্বাচন করো।';return}quizScore=Math.round(c/qs.length*100);save('sp_quiz',quizScore);$('quizResult').textContent=`স্কোর: ${c}/${qs.length} (${quizScore}%) • উত্তর দিয়েছ ${n}/${qs.length}টি`;render();$('retry').style.display='inline-block';$('submitQuiz').style.display='none'};$('retry').onclick=makeQuiz;
-function bubble(t,who){let d=document.createElement('div');d.className='bubble '+who;d.textContent=t;$('messages').appendChild(d);$('messages').scrollTop=$('messages').scrollHeight}function reply(t){let x=t.toLowerCase();if(x.includes('রুটিন')||x.includes('routine'))return 'সহজ রুটিন: ২৫ মিনিট কঠিন বিষয় পড়ো, ৫ মিনিট বিরতি নাও, ২৫ মিনিট প্রশ্ন অনুশীলন করো, শেষে ১০ মিনিট রিভিশন দাও।';if(x.includes('পরীক্ষা')||x.includes('exam'))return 'পরীক্ষার প্রস্তুতি: সিলেবাস ভাগ করো, গুরুত্বপূর্ণ সংজ্ঞা ও সূত্র লিখে অনুশীলন করো, প্রতিদিন রিভিশন দাও, এবং সময় ধরে মডেল প্রশ্ন সমাধান করো।';if(x.includes('মনোযোগ')||x.includes('focus'))return 'নোটিফিকেশন বন্ধ করো, একবারে একটি লক্ষ্য রাখো, ২৫ মিনিট টাইমার চালাও, বিরতিতে একটু হাঁটো বা পানি খাও।';return 'আমি এখন ডেমো মোডে আছি, তাই সব প্রশ্নের AI-উত্তর দিতে পারি না। সত্যিকারের AI-তে যুক্ত করতে নিরাপদ backend ও API সংযোগ প্রয়োজন।'}$('chatForm').onsubmit=e=>{e.preventDefault();let t=$('chatInput').value.trim();if(!t)return;bubble(t,'user');$('chatInput').value='';setTimeout(()=>bubble(reply(t),'bot'),120)};
-render();makeQuiz();updateClock();
+const $=id=>document.getElementById(id);
+function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));document.querySelectorAll('nav button[data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===id));}
+document.querySelectorAll('nav button[data-page]').forEach(b=>b.onclick=()=>showPage(b.dataset.page));
+$('themeBtn').onclick=()=>{document.body.classList.toggle('dark');localStorage.setItem('spDark',document.body.classList.contains('dark')?'1':'0')};if(localStorage.getItem('spDark')==='1')document.body.classList.add('dark');
+let routines=JSON.parse(localStorage.getItem('spRoutines')||'[]'),todos=JSON.parse(localStorage.getItem('spTodos')||'[]');
+function saveLists(){localStorage.setItem('spRoutines',JSON.stringify(routines));localStorage.setItem('spTodos',JSON.stringify(todos));renderLists()}
+function addRoutine(){let s=$('rSubject').value.trim(),t=$('rTime').value.trim(),d=$('rDay').value;if(!s||!t)return alert('বিষয় ও সময় লিখো।');routines.push({s,t,d});$('rSubject').value='';$('rTime').value='';saveLists()}
+function addTodo(){let t=$('todoInput').value.trim();if(!t)return;todos.push({t,done:false});$('todoInput').value='';saveLists()}
+function renderLists(){$('routineCount').textContent=routines.length;$('todoCount').textContent=todos.filter(x=>!x.done).length;$('routineList').innerHTML=routines.map((r,i)=>`<div class="feedback">${esc(r.d)} • <b>${esc(r.s)}</b> — ${esc(r.t)} <button onclick="delRoutine(${i})">মুছুন</button></div>`).join('')||'<p>এখনো রুটিন যোগ করা হয়নি।</p>';$('todoList').innerHTML=todos.map((t,i)=>`<div class="feedback"><label><input type="checkbox" style="width:auto" ${t.done?'checked':''} onchange="toggleTodo(${i})"> <span style="${t.done?'text-decoration:line-through':''}">${esc(t.t)}</span></label><button onclick="delTodo(${i})">মুছুন</button></div>`).join('')||'<p>কোনো কাজ যোগ করা হয়নি।</p>'}
+function delRoutine(i){routines.splice(i,1);saveLists()}function delTodo(i){todos.splice(i,1);saveLists()}function toggleTodo(i){todos[i].done=!todos[i].done;saveLists()}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+let remaining=1500,timer=null;function drawClock(){$('clock').textContent=String(Math.floor(remaining/60)).padStart(2,'0')+':'+String(remaining%60).padStart(2,'0')}
+function startTimer(){if(timer)return;timer=setInterval(()=>{remaining--;drawClock();if(remaining<=0){pauseTimer();$('timerMsg').textContent='সময় শেষ! এবার ৫ মিনিট বিরতি নাও 🎉';}},1000)}function pauseTimer(){clearInterval(timer);timer=null}function resetTimer(){pauseTimer();remaining=1500;drawClock();$('timerMsg').textContent=''}
+function saveJobNote(){$('jobSaved').textContent='নোট সেভ হয়েছে।';localStorage.setItem('spJobNote',$('jobNote').value)}$('jobNote').value=localStorage.getItem('spJobNote')||'';
+function askDemo(){let q=$('aiQuestion').value.trim();if(!q)return;$('aiAnswer').classList.remove('hidden');$('aiAnswer').textContent='পরামর্শ: প্রশ্নটিকে ছোট ছোট অংশে ভাগ করো, ২৫ মিনিট মনোযোগ দিয়ে পড়ো, তারপর বই বন্ধ করে নিজেকে পরীক্ষা করো। নির্দিষ্ট বিষয়ে উত্তর পেতে বাস্তব AI API সংযোগ প্রয়োজন।'}
+/* প্রশ্নব্যাংক সম্প্রসারণ: নিচের কাঠামো অনুসরণ করে নতুন প্রশ্ন যোগ করা যাবে।
+ {exam:['all','bcs'], subject:'math', q:'প্রশ্ন', options:['ক','খ','গ','ঘ'], answer:0, explanation:'ব্যাখ্যা'}
+*/
+const Q=[];
+function add(subject,q,options,answer,explanation,exam=['all','school','college','admission','bcs','bank','teacher','job']){Q.push({subject,q,options,answer,explanation,exam})}
+const B=[
+['বাংলা','বাংলা ভাষার আদি নিদর্শন কোনটি?',['চর্যাপদ','শ্রীকৃষ্ণকীর্তন','মঙ্গলকাব্য','গীতাঞ্জলি'],0,'চর্যাপদ বাংলা ভাষার প্রাচীনতম সাহিত্যিক নিদর্শন হিসেবে স্বীকৃত।'],
+['বাংলা','“বিদ্রোহী” কবিতার কবি কে?',['রবীন্দ্রনাথ ঠাকুর','কাজী নজরুল ইসলাম','জসীমউদ্দীন','জীবনানন্দ দাশ'],1,'বিদ্রোহী কবিতার রচয়িতা কাজী নজরুল ইসলাম।'],
+['বাংলা','বাংলা সাহিত্যের প্রথম সার্থক উপন্যাস কোনটি?',['কপালকুণ্ডলা','দুর্গেশনন্দিনী','আলালের ঘরের দুলাল','বিষবৃক্ষ'],1,'বঙ্কিমচন্দ্রের দুর্গেশনন্দিনীকে প্রথম সার্থক বাংলা উপন্যাস বলা হয়।'],
+['বাংলা','“সোনার তরী” কাব্যের রচয়িতা কে?',['রবীন্দ্রনাথ ঠাকুর','সুকান্ত ভট্টাচার্য','মাইকেল মধুসূদন দত্ত','শামসুর রাহমান'],0,'সোনার তরী রবীন্দ্রনাথ ঠাকুরের কাব্যগ্রন্থ।'],
+['বাংলা','“পল্লীকবি” বলা হয় কাকে?',['জসীমউদ্দীন','আল মাহমুদ','কায়কোবাদ','ফররুখ আহমদ'],0,'গ্রামীণ জীবনভিত্তিক কবিতার জন্য জসীমউদ্দীন পল্লীকবি নামে পরিচিত।'],
+['বাংলা','বাংলা বর্ণমালায় স্বরবর্ণ কয়টি (প্রচলিত গণনায়)?',['৭টি','৯টি','১১টি','১৩টি'],2,'প্রচলিত বাংলা বর্ণমালায় স্বরবর্ণ ১১টি।'],
+['বাংলা','“আমার ভাইয়ের রক্তে রাঙানো” গানের গীতিকার কে?',['আবদুল গাফ্‌ফার চৌধুরী','আলতাফ মাহমুদ','শামসুর রাহমান','হাসান হাফিজুর রহমান'],0,'গানটির গীতিকার আবদুল গাফ্‌ফার চৌধুরী।'],
+['বাংলা','“কবর” কবিতার কবি কে?',['জসীমউদ্দীন','নজরুল','রবীন্দ্রনাথ','সুকান্ত'],0,'কবর কবিতাটি জসীমউদ্দীনের বিখ্যাত রচনা।'],
+['বাংলা','“মেঘনাদবধ কাব্য” কে রচনা করেন?',['মাইকেল মধুসূদন দত্ত','বঙ্কিমচন্দ্র','বিদ্যাসাগর','রবীন্দ্রনাথ'],0,'মাইকেল মধুসূদন দত্ত অমিত্রাক্ষর ছন্দে কাব্যটি রচনা করেন।'],
+['বাংলা','“বনলতা সেন” কবিতার কবি কে?',['জীবনানন্দ দাশ','সুকান্ত','নজরুল','জসীমউদ্দীন'],0,'বনলতা সেন জীবনানন্দ দাশের বিখ্যাত কবিতা।'],
+['English','Choose the synonym of “Rapid”.',['Slow','Quick','Weak','Late'],1,'Rapid means fast or quick.'],
+['English','What is the plural of “Child”?',['Childs','Childes','Children','Childrens'],2,'The irregular plural of child is children.'],
+['English','Choose the correct spelling.',['Accomodation','Accommodation','Acommodation','Accommudation'],1,'The correct spelling is accommodation.'],
+['English','He ___ to school every day.',['go','goes','going','gone'],1,'With he/she/it in the simple present, use goes.'],
+['English','What is the antonym of “Ancient”?',['Old','Antique','Modern','Historic'],2,'Modern is the opposite of ancient.'],
+['English','A person who writes poems is a ___.',['Painter','Poet','Pilot','Singer'],1,'A person who writes poems is a poet.'],
+['English','Choose the correct article: ___ honest man.',['A','An','The','No article'],1,'Honest begins with a vowel sound, so use an.'],
+['English','Past tense of “write” is ___.',['Writed','Written','Wrote','Writing'],2,'The simple past form is wrote.'],
+['English','“Benevolent” means ___.',['Kind','Cruel','Angry','Careless'],0,'Benevolent means kind and well-meaning.'],
+['English','Which one is a conjunction?',['Beautiful','And','Quickly','Under'],1,'And joins words or clauses, so it is a conjunction.'],
+['গণিত','২০০-এর ১৫% কত?',['১৫','২০','৩০','৪০'],2,'২০০ × ১৫/১০০ = ৩০।'],
+['গণিত','১২ ও ১৮-এর ল.সা.গু কত?',['৬','২৪','৩৬','৭২'],2,'১২ ও ১৮-এর ক্ষুদ্রতম সাধারণ গুণিতক ৩৬।'],
+['গণিত','একটি ত্রিভুজের তিন কোণের সমষ্টি কত?',['৯০°','১৮০°','২৭০°','৩৬০°'],1,'সমতল জ্যামিতিতে ত্রিভুজের অন্তঃকোণের সমষ্টি ১৮০°।'],
+['গণিত','√১৪৪ = কত?',['১০','১১','১২','১৪'],2,'১২ × ১২ = ১৪৪।'],
+['গণিত','৩/৪-এর দশমিক রূপ কোনটি?',['০.২৫','০.৫০','০.৭৫','১.২৫'],2,'৩ ÷ ৪ = ০.৭৫।'],
+['গণিত','x + 7 = 15 হলে x কত?',['৭','৮','৯','২২'],1,'উভয় পাশ থেকে ৭ বিয়োগ করলে x = ৮।'],
+['গণিত','একটি বর্গের বাহু ৫ সেমি হলে ক্ষেত্রফল কত?',['১০','২০','২৫','৩০'],2,'বর্গের ক্ষেত্রফল = বাহু² = ২৫ বর্গসেমি।'],
+['গণিত','১ কিলোমিটার সমান কত মিটার?',['১০০','৫০০','১০০০','১০০০০'],2,'১ কিলোমিটার = ১০০০ মিটার।'],
+['গণিত','২, ৪, ৬, ৮, ... ধারার পরের সংখ্যা কত?',['৯','১০','১১','১২'],1,'প্রতিবার ২ করে বাড়ছে, তাই পরের সংখ্যা ১০।'],
+['গণিত','৫ জনের গড় বয়স ১০ বছর। মোট বয়স কত?',['১৫','৩০','৫০','১০০'],2,'মোট = গড় × সংখ্যা = ১০ × ৫ = ৫০।'],
+['সাধারণ জ্ঞান','বাংলাদেশের স্বাধীনতা দিবস কবে?',['২১ ফেব্রুয়ারি','২৬ মার্চ','১৬ ডিসেম্বর','৭ মার্চ'],1,'বাংলাদেশের স্বাধীনতা দিবস ২৬ মার্চ।'],
+['সাধারণ জ্ঞান','বাংলাদেশের বিজয় দিবস কবে?',['২৬ মার্চ','১৪ এপ্রিল','১৬ ডিসেম্বর','২১ ফেব্রুয়ারি'],2,'বিজয় দিবস ১৬ ডিসেম্বর।'],
+['সাধারণ জ্ঞান','বাংলাদেশের জাতীয় ফুল কোনটি?',['গোলাপ','শাপলা','জুঁই','পদ্ম'],1,'বাংলাদেশের জাতীয় ফুল শাপলা।'],
+['সাধারণ জ্ঞান','বাংলাদেশের জাতীয় সংসদ ভবনের স্থপতি কে?',['লুই আই কান','এফ আর খান','জয়নুল আবেদিন','মাজহারুল ইসলাম'],0,'জাতীয় সংসদ ভবনের নকশা করেন স্থপতি লুই আই কান।'],
+['সাধারণ জ্ঞান','জাতিসংঘ প্রতিষ্ঠিত হয় কোন সালে?',['১৯১৯','১৯৪৫','১৯৫২','১৯৭১'],1,'জাতিসংঘ ১৯৪৫ সালে প্রতিষ্ঠিত হয়।'],
+['সাধারণ জ্ঞান','বাংলাদেশের মুদ্রার নাম কী?',['রুপি','টাকা','দিনার','রিয়াল'],1,'বাংলাদেশের মুদ্রার নাম টাকা।'],
+['সাধারণ জ্ঞান','বিশ্ব পরিবেশ দিবস কবে?',['৫ জুন','৮ মার্চ','১ মে','১০ ডিসেম্বর'],0,'বিশ্ব পরিবেশ দিবস পালিত হয় ৫ জুন।'],
+['সাধারণ জ্ঞান','বাংলাদেশের জাতীয় স্মৃতিসৌধ কোথায়?',['সাভার','কুমিল্লা','খুলনা','সিলেট'],0,'জাতীয় স্মৃতিসৌধ সাভারে অবস্থিত।'],
+['সাধারণ জ্ঞান','বাংলা নববর্ষের প্রথম দিন কোনটি?',['১ ফাল্গুন','১ বৈশাখ','১ জ্যৈষ্ঠ','১ আষাঢ়'],1,'বাংলা নববর্ষ শুরু হয় ১ বৈশাখ।'],
+['সাধারণ জ্ঞান','সুন্দরবন কোন ধরনের বন?',['মরুভূমির বন','ম্যানগ্রোভ বন','শঙ্কু বন','তৃণভূমি'],1,'সুন্দরবন বিশ্বের বৃহৎ ম্যানগ্রোভ বনগুলোর একটি।'],
+['সাধারণ বিজ্ঞান','পানির রাসায়নিক সংকেত কী?',['CO₂','O₂','H₂O','NaCl'],2,'পানি দুটি হাইড্রোজেন ও একটি অক্সিজেন পরমাণু দিয়ে গঠিত।'],
+['সাধারণ বিজ্ঞান','উদ্ভিদ সালোকসংশ্লেষণে কোন গ্যাস গ্রহণ করে?',['অক্সিজেন','কার্বন ডাই-অক্সাইড','নাইট্রোজেন','হাইড্রোজেন'],1,'সালোকসংশ্লেষণে উদ্ভিদ কার্বন ডাই-অক্সাইড গ্রহণ করে।'],
+['সাধারণ বিজ্ঞান','মানবদেহে রক্ত পাম্প করে কোন অঙ্গ?',['ফুসফুস','যকৃৎ','হৃদ্‌যন্ত্র','বৃক্ক'],2,'হৃদ্‌যন্ত্র রক্ত সারা শরীরে পাম্প করে।'],
+['সাধারণ বিজ্ঞান','পৃথিবীর প্রাকৃতিক উপগ্রহ কোনটি?',['মঙ্গল','চাঁদ','সূর্য','শুক্র'],1,'চাঁদ পৃথিবীর প্রাকৃতিক উপগ্রহ।'],
+['সাধারণ বিজ্ঞান','সমুদ্রপৃষ্ঠে পানির স্ফুটনাঙ্ক কত?',['০°C','৫০°C','১০০°C','১৫০°C'],2,'স্বাভাবিক বায়ুচাপে পানি ১০০°C তাপমাত্রায় ফোটে।'],
+['সাধারণ বিজ্ঞান','বল-এর SI একক কী?',['জুল','ওয়াট','নিউটন','প্যাসকেল'],2,'বলের SI একক নিউটন।'],
+['সাধারণ বিজ্ঞান','মানবদেহের সবচেয়ে বড় অঙ্গ কোনটি?',['হৃদ্‌যন্ত্র','ত্বক','যকৃৎ','ফুসফুস'],1,'ত্বক মানবদেহের সবচেয়ে বড় অঙ্গ।'],
+['সাধারণ বিজ্ঞান','শব্দ কোন মাধ্যমে চলতে পারে না?',['বায়ু','পানি','লোহা','শূন্যস্থান'],3,'শব্দ চলতে মাধ্যম প্রয়োজন, তাই শূন্যস্থানে চলে না।'],
+['সাধারণ বিজ্ঞান','ভিটামিন C-এর অভাবে কোন রোগ হয়?',['রিকেটস','স্কার্ভি','বেরিবেরি','রাতকানা'],1,'ভিটামিন C-এর ঘাটতিতে স্কার্ভি হয়।'],
+['সাধারণ বিজ্ঞান','সূর্যের আলো পৃথিবীতে আসতে আনুমানিক কত সময় লাগে?',['৮ সেকেন্ড','৮ মিনিট ২০ সেকেন্ড','১ ঘণ্টা','২৪ ঘণ্টা'],1,'সূর্য থেকে পৃথিবীতে আলো আসতে প্রায় ৮ মিনিট ২০ সেকেন্ড লাগে।'],
+['ICT / কম্পিউটার','CPU-এর পূর্ণরূপ কী?',['Central Processing Unit','Computer Personal Unit','Central Program Utility','Control Processing User'],0,'CPU-এর পূর্ণরূপ Central Processing Unit।'],
+['ICT / কম্পিউটার','কম্পিউটারের “মস্তিষ্ক” বলা হয় কোনটিকে?',['মনিটর','CPU','মাউস','কিবোর্ড'],1,'CPU নির্দেশনা প্রক্রিয়াকরণ করে বলে একে কম্পিউটারের মস্তিষ্ক বলা হয়।'],
+['ICT / কম্পিউটার','WWW-এর পূর্ণরূপ কী?',['World Wide Web','Wide World Window','Web World Wire','World Web Work'],0,'WWW-এর পূর্ণরূপ World Wide Web।'],
+['ICT / কম্পিউটার','নিচের কোনটি ইনপুট ডিভাইস?',['মনিটর','প্রিন্টার','কিবোর্ড','স্পিকার'],2,'কিবোর্ড দিয়ে কম্পিউটারে তথ্য ইনপুট দেওয়া হয়।'],
+['ICT / কম্পিউটার','১ বাইটে কত বিট?',['২','৪','৮','১৬'],2,'১ বাইট = ৮ বিট।'],
+['ICT / কম্পিউটার','নিচের কোনটি অপারেটিং সিস্টেম?',['Windows','Google','Facebook','YouTube'],0,'Windows একটি অপারেটিং সিস্টেম।'],
+['ICT / কম্পিউটার','ই-মেইলে “@” চিহ্নটি সাধারণত কী আলাদা করে?',['ব্যবহারকারীর নাম ও ডোমেইন','ফাইল ও ফোল্ডার','পাসওয়ার্ড ও PIN','তারিখ ও সময়'],0,'ই-মেইল ঠিকানায় @-এর আগে ব্যবহারকারী এবং পরে ডোমেইন থাকে।'],
+['ICT / কম্পিউটার','ওয়েব পেজ তৈরির মৌলিক মার্কআপ ভাষা কোনটি?',['HTML','CPU','PDF','USB'],0,'HTML ওয়েব পেজের কাঠামো তৈরিতে ব্যবহৃত হয়।'],
+['ICT / কম্পিউটার','কম্পিউটারে স্থায়ীভাবে ফাইল রাখার যন্ত্র কোনটি?',['RAM','SSD','ক্যাশ','রেজিস্টার'],1,'SSD একটি স্থায়ী স্টোরেজ ডিভাইস।'],
+['ICT / কম্পিউটার','সাইবার নিরাপত্তায় শক্তিশালী পাসওয়ার্ডে কী থাকা ভালো?',['শুধু নাম','শুধু জন্মতারিখ','বিভিন্ন ধরনের অক্ষর, সংখ্যা ও চিহ্ন','123456'],2,'দীর্ঘ ও বৈচিত্র্যময় পাসওয়ার্ড অনুমান করা কঠিন।']
+];
+const subjectMap={'বাংলা':'bangla','English':'english','গণিত':'math','সাধারণ জ্ঞান':'gk','সাধারণ বিজ্ঞান':'science','ICT / কম্পিউটার':'ict'};
+B.forEach(x=>add(subjectMap[x[0]],x[1],x[2],x[3],x[4]));
+/* অতিরিক্ত প্রশ্ন: প্রশ্নব্যাংকের আকার বাড়াতে এই একই add() পদ্ধতিতে প্রশ্ন যোগ করো। */
+const extras=[
+['bangla','“অগ্নিবীণা” কার কাব্যগ্রন্থ?',['কাজী নজরুল ইসলাম','রবীন্দ্রনাথ','জীবনানন্দ','সুকান্ত'],0,'অগ্নিবীণা নজরুলের প্রথম কাব্যগ্রন্থ।'],
+['bangla','“আনন্দমঠ” উপন্যাসের লেখক কে?',['শরৎচন্দ্র','বঙ্কিমচন্দ্র','রবীন্দ্রনাথ','মানিক বন্দ্যোপাধ্যায়'],1,'আনন্দমঠ বঙ্কিমচন্দ্র চট্টোপাধ্যায়ের রচনা।'],
+['bangla','“রূপসী বাংলা” কার কাব্যগ্রন্থ?',['জীবনানন্দ দাশ','নজরুল','জসীমউদ্দীন','সুকান্ত'],0,'রূপসী বাংলা জীবনানন্দ দাশের কাব্যগ্রন্থ।'],
+['bangla','বাংলা গদ্যের জনক হিসেবে পরিচিত কে?',['ঈশ্বরচন্দ্র বিদ্যাসাগর','মাইকেল','নজরুল','দীনবন্ধু মিত্র'],0,'বাংলা গদ্যের বিকাশে বিদ্যাসাগরের বড় অবদান রয়েছে।'],
+['english','Opposite of “Expand” is ___.',['Extend','Enlarge','Contract','Increase'],2,'Contract means to become smaller.'],
+['english','She is good ___ mathematics.',['in','at','on','for'],1,'The usual phrase is good at something.'],
+['english','Choose the noun.',['Beautiful','Beauty','Beautifully','Beautify'],1,'Beauty is a noun.'],
+['english','The comparative form of “good” is ___.',['Gooder','Best','Better','More good'],2,'Good, better, best is an irregular comparison.'],
+['english','“Once in a blue moon” means ___.',['Very often','Rarely','Every day','Immediately'],1,'The idiom means very rarely.'],
+['math','২৫০-এর ২০% কত?',['২৫','৪০','৫০','৭৫'],2,'২৫০ × ২০/১০০ = ৫০।'],
+['math','৭² কত?',['১৪','৪২','৪৯','৫৬'],2,'৭ × ৭ = ৪৯।'],
+['math','১০, ২০, ৩০-এর গড় কত?',['১৫','২০','২৫','৩০'],1,'গড় = (১০+২০+৩০)/৩ = ২০।'],
+['math','একটি আয়তক্ষেত্রের দৈর্ঘ্য ৮ ও প্রস্থ ৩ হলে ক্ষেত্রফল কত?',['১১','১৬','২৪','৪৮'],2,'ক্ষেত্রফল = দৈর্ঘ্য × প্রস্থ = ২৪।'],
+['math','০.৫ ভগ্নাংশে কত?',['১/২','১/৩','১/৪','২/৩'],0,'০.৫ = ৫/১০ = ১/২।'],
+['gk','বাংলাদেশের জাতীয় কবি কে?',['রবীন্দ্রনাথ ঠাকুর','কাজী নজরুল ইসলাম','জসীমউদ্দীন','সুকান্ত'],1,'কাজী নজরুল ইসলাম বাংলাদেশের জাতীয় কবি।'],
+['gk','আন্তর্জাতিক মাতৃভাষা দিবস কবে?',['২১ ফেব্রুয়ারি','২৬ মার্চ','১৬ ডিসেম্বর','১ মে'],0,'২১ ফেব্রুয়ারি আন্তর্জাতিক মাতৃভাষা দিবস।'],
+['gk','পৃথিবীর বৃহত্তম মহাসাগর কোনটি?',['আটলান্টিক','ভারত','প্রশান্ত','আর্কটিক'],2,'প্রশান্ত মহাসাগর পৃথিবীর বৃহত্তম মহাসাগর।'],
+['gk','বাংলাদেশের জাতীয় ফল কোনটি?',['আম','কাঁঠাল','লিচু','কলা'],1,'কাঁঠাল বাংলাদেশের জাতীয় ফল।'],
+['gk','সার্কের সদর দপ্তর কোথায়?',['ঢাকা','দিল্লি','কাঠমান্ডু','কলম্বো'],2,'সার্কের সদর দপ্তর নেপালের কাঠমান্ডুতে।'],
+['science','উদ্ভিদের খাদ্য তৈরির প্রক্রিয়া কী?',['শ্বসন','সালোকসংশ্লেষণ','বাষ্পীভবন','পরিপাক'],1,'উদ্ভিদ সালোকসংশ্লেষণের মাধ্যমে খাদ্য তৈরি করে।'],
+['science','বিদ্যুৎ প্রবাহের SI একক কী?',['ভোল্ট','ওহম','অ্যাম্পিয়ার','ওয়াট'],2,'বিদ্যুৎ প্রবাহের SI একক অ্যাম্পিয়ার।'],
+['science','পৃথিবী সূর্যকে একবার প্রদক্ষিণ করতে প্রায় কত সময় নেয়?',['২৪ ঘণ্টা','৩০ দিন','৩৬৫ দিন ৬ ঘণ্টা','১২ ঘণ্টা'],2,'পৃথিবীর একবার বার্ষিক পরিক্রমণে প্রায় ৩৬৫ দিন ৬ ঘণ্টা লাগে।'],
+['science','মানুষ শ্বাস নেওয়ার সময় কোন গ্যাস গ্রহণ করে?',['কার্বন ডাই-অক্সাইড','অক্সিজেন','হিলিয়াম','মিথেন'],1,'শ্বাস-প্রশ্বাসে মানুষ অক্সিজেন গ্রহণ করে।'],
+['science','চৌম্বকের সমমেরু পরস্পরকে কী করে?',['আকর্ষণ','বিকর্ষণ','নিরপেক্ষ করে','গলিয়ে দেয়'],1,'চৌম্বকের সমমেরু বিকর্ষণ করে, বিপরীত মেরু আকর্ষণ করে।'],
+['ict','URL-এর পূর্ণরূপ কী?',['Uniform Resource Locator','Universal Record Link','User Reference Line','Unified Router Link'],0,'URL-এর পূর্ণরূপ Uniform Resource Locator।'],
+['ict','কম্পিউটারের অস্থায়ী মেমোরি কোনটি?',['ROM','RAM','SSD','DVD'],1,'RAM সাধারণত চলমান কাজের অস্থায়ী মেমোরি।'],
+['ict','ফিশিং কী?',['মাছ ধরা','প্রতারণার মাধ্যমে তথ্য চুরি','ফাইল প্রিন্ট','ডেটা ব্যাকআপ'],1,'ফিশিং হলো ভুয়া বার্তা/ওয়েবসাইট দিয়ে সংবেদনশীল তথ্য হাতিয়ে নেওয়ার চেষ্টা।'],
+['ict','নিচের কোনটি সার্চ ইঞ্জিন?',['Google','PowerPoint','Windows','Bluetooth'],0,'Google একটি সার্চ ইঞ্জিন।']
+];
+extras.forEach(x=>add(x[0],x[1],x[2],x[3],x[4]));
+let quiz=[],qi=0,answers=[],finished=false;
+function updateQuizChoices(){
+  const exam=$('exam').value, wrap=$('classWrap'), label=$('subjectLabel');
+  const schoolLike=['school','college'].includes(exam);
+  wrap.classList.toggle('hidden',!schoolLike);
+  label.textContent=schoolLike?'শ্রেণি অনুযায়ী বিষয়':'পরীক্ষাভিত্তিক বিষয়';
+  const subject=$('subject');
+  const schoolOptions=[
+    ['all','সকল বিষয়'],['bangla','বাংলা'],['english','English'],['math','গণিত'],['science','বিজ্ঞান'],['gk','বাংলাদেশ ও বিশ্বপরিচয় / সাধারণ জ্ঞান'],['ict','ICT / কম্পিউটার']
+  ];
+  const jobOptions=[
+    ['all','সকল বিষয়'],['bangla','বাংলা'],['english','English'],['math','গণিত'],['gk','সাধারণ জ্ঞান'],['science','সাধারণ বিজ্ঞান'],['ict','ICT / কম্পিউটার']
+  ];
+  const options=schoolLike?schoolOptions:jobOptions;
+  const previous=subject.value;
+  subject.innerHTML=options.map(o=>`<option value="${o[0]}">${o[1]}</option>`).join('');
+  subject.value=options.some(o=>o[0]===previous)?previous:'all';
+}
+function startQuiz(){
+  const sub=$('subject').value, exam=$('exam').value, count=Number($('questionCount').value);
+  let pool=Q.filter(x=>{
+    const subjectOk=(sub==='all'||x.subject===sub);
+    let examOk=true;
+    if(exam==='bcs') examOk=x.exam.includes('bcs')||x.exam.includes('all');
+    else if(exam==='bank') examOk=x.exam.includes('bank')||x.exam.includes('all');
+    else if(exam==='teacher') examOk=x.exam.includes('teacher')||x.exam.includes('all');
+    else if(exam==='otherjob') examOk=x.exam.includes('job')||x.exam.includes('all');
+    else if(exam==='jobprep') examOk=['bcs','bank','teacher','job','all'].some(k=>x.exam.includes(k));
+    else if(exam==='school') examOk=x.exam.includes('school')||x.exam.includes('all');
+    else if(exam==='college') examOk=x.exam.includes('college')||x.exam.includes('all');
+    else if(exam==='admission') examOk=x.exam.includes('admission')||x.exam.includes('all');
+    return subjectOk&&examOk;
+  });
+  if(!pool.length){alert('এই বাছাইয়ে এখনো প্রশ্ন নেই। “সকল বিষয়” বেছে নাও অথবা প্রশ্নব্যাংকে প্রশ্ন যোগ করো।');return;}
+  pool=pool.slice().sort(()=>Math.random()-.5);
+  quiz=[];
+  while(quiz.length<count){quiz.push(...pool.slice(0,Math.min(pool.length,count-quiz.length)));if(pool.length<count)pool=pool.slice().sort(()=>Math.random()-.5);}
+  quiz=quiz.slice(0,count);
+  qi=0;answers=Array(quiz.length).fill(null);finished=false;
+  $('quizBox').classList.remove('hidden');$('resultBox').classList.add('hidden');
+  renderQuestion();$('quizBox').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function renderQuestion(){let q=quiz[qi];$('progress').textContent=`প্রশ্ন ${qi+1} / ${quiz.length}`;$('quizScore').textContent=`উত্তর: ${answers.filter(a=>a!==null).length}`;$('questionArea').innerHTML=`<h3>${esc(q.q)}</h3>${q.options.map((o,i)=>`<button class="option ${answers[qi]===i?'selected':''}" onclick="chooseAnswer(${i})">${'কখগঘ'[i]||i+1}. ${esc(o)}</button>`).join('')}`;$('nextBtn').classList.toggle('hidden',qi===quiz.length-1);$('finishBtn').classList.toggle('hidden',qi!==quiz.length-1)}
+function chooseAnswer(i){answers[qi]=i;renderQuestion()}
+function nextQuestion(){if(qi<quiz.length-1){qi++;renderQuestion()}}
+function finishQuiz(){let score=quiz.reduce((n,q,i)=>n+(answers[i]===q.answer?1:0),0),percent=Math.round(score/quiz.length*100);let best=Number(localStorage.getItem('spBestScore')||0);if(percent>best){localStorage.setItem('spBestScore',percent);best=percent}$('bestScore').textContent=best+'%';$('resultBox').classList.remove('hidden');$('resultBox').innerHTML=`<h2>📊 পরীক্ষার ফলাফল</h2><div class="stat">${score} / ${quiz.length}</div><p>সঠিক উত্তর: ${score} • ভুল/উত্তর না দেওয়া: ${quiz.length-score} • নম্বর: ${percent}%</p><button onclick="startQuiz()">আবার পরীক্ষা দাও</button> <button onclick="showReview()">উত্তর ও ব্যাখ্যা দেখো</button><div id="reviewArea"></div>`;$('resultBox').scrollIntoView({behavior:'smooth',block:'start'})}
+function showReview(){$('reviewArea').innerHTML=quiz.map((q,i)=>`<div class="feedback"><b>${i+1}. ${esc(q.q)}</b><p style="color:${answers[i]===q.answer?'var(--good)':'var(--bad)'}">তোমার উত্তর: ${answers[i]===null?'উত্তর দাওনি':esc(q.options[answers[i]])}</p><p style="color:var(--good)">সঠিক উত্তর: ${esc(q.options[q.answer])}</p><p>ব্যাখ্যা: ${esc(q.explanation)}</p></div>`).join('')}
+updateQuizChoices();renderLists();$('bestScore').textContent=localStorage.getItem('spBestScore')?localStorage.getItem('spBestScore')+'%':'—';drawClock();
 </script></body></html>
